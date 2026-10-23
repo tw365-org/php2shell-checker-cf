@@ -1,7 +1,8 @@
-// Complete Single-Page Application (SPA) HTML Template for PHP2Shell Checker
-// Includes Mandatory SVG Favicon, Tailwind CSS, Security Dashboard UI, Front & Back Office
+// Obsidian TUI / agy Console Theme for PHP2Shell Edge Security Checker
+// Crafted with Huashu-Design principles & developer-grade CLI aesthetics
+// Pure Obsidian Palette, ANSI Semantic Badges, Monospace Grid, and Zero Broken Assets
 
-export const FAVICON_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E`
+export const FAVICON_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0b0e'/%3E%3Ctext x='4' y='22' font-family='monospace' font-weight='900' font-size='18' fill='%2310b981'%3E%E2%9D%AF_%3C/text%3E%3C/svg%3E`
 
 export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
   return `<!DOCTYPE html>
@@ -9,8 +10,8 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${appName} - Cloudflare Edge Security</title>
-  <!-- Mandatory Embedded Vector SVG Favicon -->
+  <title>${appName} :: agy console</title>
+  <!-- Mandatory Embedded Vector SVG Favicon: Obsidian Prompt ❯_ -->
   <link rel="icon" type="image/svg+xml" href="${FAVICON_SVG}">
   <!-- Tailwind CSS CDN for Zero-Build Edge Distribution -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -20,292 +21,326 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       theme: {
         extend: {
           colors: {
-            brand: {
-              50: '#f0f9ff',
-              400: '#38bdf8',
-              500: '#0284c7',
-              600: '#0369a1',
-              900: '#0c4a6e',
+            obsidian: {
+              950: '#08090c',
+              900: '#0d0e12',
+              850: '#12141a',
+              800: '#1a1d24',
+              700: '#272b36',
             },
-            vuln: '#ef4444',
-            safe: '#10b981',
-            unknown: '#f59e0b',
+            ansi: {
+              green: '#10b981',
+              amber: '#f59e0b',
+              red: '#f43f5e',
+              cyan: '#06b6d4',
+              blue: '#3b82f6',
+              purple: '#a855f7',
+              gray: '#64748b',
+            }
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', '"Fira Code"', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
           }
         }
       }
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    code, pre, .font-mono {
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
+    * {
       font-family: 'JetBrains Mono', monospace;
     }
-    .grid-bg {
-      background-size: 30px 30px;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    ::selection {
+      background-color: #10b981;
+      color: #08090c;
     }
-    .light .grid-bg {
-      background-image: 
-        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    .tui-border {
+      border: 1px solid #272b36;
+    }
+    .tui-glow {
+      box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.15);
+    }
+    .cursor-blink {
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .scan-pattern {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 16px 16px;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white transition-colors duration-200">
-  <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+<body class="bg-obsidian-950 text-zinc-200 min-h-screen flex flex-col antialiased scan-pattern">
 
-  <!-- Top Navigation Bar -->
-  <header class="relative z-10 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-md sticky top-0">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('front')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 12 2 2 4-4"/>
-          </svg>
+  <!-- Top Terminal Bar (Window Header) -->
+  <header class="border-b border-obsidian-800 bg-obsidian-900/90 backdrop-blur-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 h-12 flex items-center justify-between">
+      <!-- Window Title / Host Details -->
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-1.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
         </div>
-        <div>
-          <span class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-            PHP2Shell <span class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-sky-500/20 text-sky-400 border border-sky-500/30">Edge CF</span>
+        <div class="h-4 w-px bg-obsidian-800"></div>
+        <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('front')">
+          <span class="text-ansi-green font-bold text-sm tracking-tight">❯</span>
+          <span class="text-xs font-bold text-white tracking-wider">agy</span>
+          <span class="text-xs text-zinc-500">v1.0.0-cf</span>
+          <span class="hidden sm:inline-block text-[10px] px-1.5 py-0.5 rounded bg-obsidian-800 text-zinc-400 border border-obsidian-700">
+            edge-runtime: cf-workers
           </span>
-          <p class="text-xs text-slate-400">CVE-2026-109618 / 109619 Detector</p>
         </div>
       </div>
 
-      <nav class="flex items-center space-x-1 sm:space-x-2">
-        <button id="nav-btn-front" onclick="switchTab('front')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-sky-500/10 text-sky-400 border border-sky-500/30">
-          🌐 公開檢測 (前台)
+      <!-- Navigation as CLI Subcommands -->
+      <nav class="flex items-center space-x-1 sm:space-x-2 text-xs">
+        <button id="nav-btn-front" onclick="switchTab('front')" class="px-2.5 py-1 rounded bg-obsidian-800 text-ansi-green border border-obsidian-700 font-semibold transition">
+          <span class="text-zinc-500 font-normal">[1]</span> agy check
         </button>
-        <button id="nav-btn-batch" onclick="switchTab('batch')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800">
-          ⚡ 批次掃描
+        <button id="nav-btn-batch" onclick="switchTab('batch')" class="px-2.5 py-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition">
+          <span class="text-zinc-500 font-normal">[2]</span> agy batch
         </button>
-        <button id="nav-btn-admin" onclick="switchTab('admin')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-          後台管理
+        <button id="nav-btn-admin" onclick="switchTab('admin')" class="px-2.5 py-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition">
+          <span class="text-zinc-500 font-normal">[3]</span> agy admin
         </button>
-        <button onclick="toggleTheme()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition" title="切換深淺模式">
-          🌓
+        <div class="h-4 w-px bg-obsidian-800 mx-1"></div>
+        <button onclick="toggleTheme()" class="px-2 py-1 text-zinc-500 hover:text-zinc-300 text-xs" title="切換高對比">
+          <span class="text-[11px]">MODE</span>
         </button>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content Area -->
-  <main class="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
-    <!-- SECTION 1: FRONT OFFICE (Single URL Scan) -->
-    <div id="view-front" class="space-y-8 max-w-3xl mx-auto">
-      <!-- Hero Banner -->
-      <div class="text-center space-y-3">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Cloudflare Workers 全球邊緣秒級響應
+  <!-- Main Terminal Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+
+    <!-- ============================================== -->
+    <!-- VIEW 1: SINGLE CHECK (agy check) -->
+    <!-- ============================================== -->
+    <div id="view-front" class="space-y-6 max-w-4xl mx-auto">
+      
+      <!-- Terminal ASCII Header Banner -->
+      <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-4 sm:p-5 text-xs text-zinc-400 space-y-2">
+        <div class="flex items-center justify-between border-b border-obsidian-800 pb-2">
+          <div class="flex items-center gap-2">
+            <span class="text-ansi-green font-bold">●</span>
+            <span class="font-bold text-zinc-200 uppercase tracking-widest text-[11px]">SECURITY ADVISORY CHECKER</span>
+            <span class="text-zinc-500">:: CVE-2026-109618 / CVE-2026-109619</span>
+          </div>
+          <span class="text-[10px] text-zinc-500 font-mono">STATUS: ACTIVE</span>
         </div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-          PHP2Shell 漏洞在線檢測
-        </h1>
-        <p class="text-sm sm:text-base text-slate-400 max-w-xl mx-auto">
-          依據官方安全通報 (2026-10-21)，透過分析網站 HTTP 標頭版本，評估是否受 CVE-2026-109618 及 CVE-2026-109619 影響。
+        <p class="text-zinc-400 leading-relaxed text-xs">
+          Detects potential PHP2Shell vulnerability exposure by analyzing remote HTTP headers (<code class="text-zinc-300">Server</code>, <code class="text-zinc-300">X-Powered-By</code>) from Cloudflare edge locations worldwide. Upstream fixes: <span class="text-ansi-green font-bold">8.2.35</span>, <span class="text-ansi-green font-bold">8.3.36</span>, <span class="text-ansi-green font-bold">8.4.27</span>, <span class="text-ansi-green font-bold">8.5.12</span>.
         </p>
       </div>
 
-      <!-- Scan Card -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 sm:p-6 shadow-2xl backdrop-blur-xl">
-        <form id="single-scan-form" onsubmit="handleSingleScan(event)" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">目標網站 URL 或網域名稱</label>
-            <div class="relative flex items-center">
-              <span class="absolute left-4 text-slate-500 font-mono text-sm">https://</span>
-              <input type="text" id="target-url" placeholder="example.com 或 https://example.com" required
-                class="w-full bg-slate-950/80 border border-slate-700/80 rounded-xl py-3 pl-20 pr-32 text-sm sm:text-base text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 transition font-mono">
-              <button type="submit" id="btn-submit-scan"
-                class="absolute right-2 px-4 py-2 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-sm font-semibold rounded-lg shadow-lg shadow-sky-500/20 transition-all flex items-center gap-1.5">
-                <span id="scan-spinner" class="hidden animate-spin">⏳</span>
-                <span>開始檢測</span>
-              </button>
-            </div>
+      <!-- Command Prompt Input Box -->
+      <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-3 sm:p-4 tui-glow">
+        <form id="single-scan-form" onsubmit="handleSingleScan(event)" class="space-y-3">
+          <div class="flex items-center text-xs text-zinc-400">
+            <span class="text-ansi-green font-bold mr-2">❯</span>
+            <span class="text-zinc-400 mr-2">agy check</span>
+            <span class="text-zinc-500">--url</span>
           </div>
-          
-          <!-- Quick example chips -->
-          <div class="flex flex-wrap items-center gap-2 pt-1">
-            <span class="text-xs text-slate-500">快速範例：</span>
-            <button type="button" onclick="fillUrl('php.net')" class="text-xs px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 font-mono">php.net</button>
-            <button type="button" onclick="fillUrl('wordpress.org')" class="text-xs px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 font-mono">wordpress.org</button>
-            <button type="button" onclick="fillUrl('wikipedia.org')" class="text-xs px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 font-mono">wikipedia.org</button>
+
+          <div class="relative flex items-center">
+            <input type="text" id="target-url" placeholder="https://example.com" required
+              class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-2.5 text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-ansi-green focus:ring-1 focus:ring-ansi-green font-mono">
+            <button type="submit" id="btn-submit-scan"
+              class="absolute right-1.5 px-3 py-1.5 bg-obsidian-800 hover:bg-obsidian-700 text-ansi-green border border-obsidian-700 rounded text-xs font-semibold transition flex items-center gap-1.5">
+              <span id="scan-spinner" class="hidden">...</span>
+              <span>[RUN]</span>
+            </button>
+          </div>
+
+          <!-- CLI Quick Args Chips -->
+          <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px]">
+            <span class="text-zinc-500">targets:</span>
+            <button type="button" onclick="fillUrl('php.net')" class="px-2 py-0.5 rounded bg-obsidian-850 hover:bg-obsidian-800 text-zinc-400 border border-obsidian-800">--url php.net</button>
+            <button type="button" onclick="fillUrl('wordpress.org')" class="px-2 py-0.5 rounded bg-obsidian-850 hover:bg-obsidian-800 text-zinc-400 border border-obsidian-800">--url wordpress.org</button>
+            <button type="button" onclick="fillUrl('wikipedia.org')" class="px-2 py-0.5 rounded bg-obsidian-850 hover:bg-obsidian-800 text-zinc-400 border border-obsidian-800">--url wikipedia.org</button>
+            <span class="text-zinc-600 ml-auto hidden sm:inline text-[10px]">press [Enter] to execute</span>
           </div>
         </form>
       </div>
 
-      <!-- Scan Result Area -->
-      <div id="scan-result" class="hidden space-y-4">
-        <!-- Rendered by JS -->
+      <!-- Result Terminal Output -->
+      <div id="scan-result" class="hidden">
+        <!-- Rendered by JS as structured TUI block -->
       </div>
 
-      <!-- Security Advisory Reference -->
-      <div class="border border-slate-800 rounded-xl p-5 bg-slate-900/40 text-xs text-slate-400 space-y-2">
-        <div class="font-semibold text-slate-300 flex items-center gap-1.5">
-          <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          官方安全修復基準說明
-        </div>
-        <p>上游官方修復版本為：<span class="text-emerald-400 font-mono font-semibold">8.2.35</span>、<span class="text-emerald-400 font-mono font-semibold">8.3.36</span>、<span class="text-emerald-400 font-mono font-semibold">8.4.27</span> 與 <span class="text-emerald-400 font-mono font-semibold">8.5.12</span>。</p>
-        <p>PHP 5.4–5.6, 7.0–7.4, 8.0, 8.1 等已終止支援 (EOL) 分支即使版號較高仍會標註為潛在受威脅。HTTP 標頭檢測無法確認系統是否套用 Linux 發行版 backport 修補程式，亦未進行任何 PoC 攻擊性探針。</p>
-      </div>
     </div>
 
-    <!-- SECTION 2: BATCH SCAN -->
+    <!-- ============================================== -->
+    <!-- VIEW 2: BATCH SCAN (agy batch) -->
+    <!-- ============================================== -->
     <div id="view-batch" class="hidden space-y-6 max-w-4xl mx-auto">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-2xl font-bold text-white">⚡ 批次網站檢測</h2>
-          <p class="text-sm text-slate-400">一次輸入多個網址，透過 Cloudflare 邊緣並發快速檢驗</p>
+      <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-4 text-xs space-y-1">
+        <div class="flex items-center gap-2 text-zinc-300 font-bold">
+          <span class="text-ansi-cyan">⚡</span>
+          <span>BATCH TARGET INSPECTOR (CONCURRENT CLI QUEUE)</span>
         </div>
+        <p class="text-zinc-500 text-[11px]">Input up to 20 domains/URLs line by line. Executes concurrent edge HTTP probes.</p>
       </div>
 
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">每行輸入一個網址 (最多支援 20 個網址)</label>
-          <textarea id="batch-urls" rows="6" placeholder="https://site-a.com&#10;https://site-b.org&#10;https://example.net"
-            class="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-sm text-white font-mono focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20"></textarea>
+      <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-4 space-y-3">
+        <div class="text-xs text-zinc-400 flex items-center justify-between">
+          <span><span class="text-ansi-green font-bold">❯</span> agy batch --stdin</span>
+          <span id="batch-count" class="text-zinc-500 text-[11px]">0 targets queued</span>
         </div>
+        <textarea id="batch-urls" rows="6" placeholder="https://domain-alpha.com&#10;https://domain-bravo.org&#10;https://example.net"
+          class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-3 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-ansi-cyan font-mono"></textarea>
+        
         <div class="flex items-center justify-between">
-          <span id="batch-count" class="text-xs text-slate-500">已輸入 0 個目標</span>
-          <button onclick="handleBatchScan()" id="btn-batch-scan" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg shadow-lg shadow-sky-500/20 transition flex items-center gap-2">
-            <span>開始批次檢測</span>
+          <span class="text-[10px] text-zinc-500">SSRF filtering enforced on all targets</span>
+          <button onclick="handleBatchScan()" id="btn-batch-scan"
+            class="px-4 py-1.5 bg-obsidian-800 hover:bg-obsidian-700 text-ansi-cyan border border-obsidian-700 rounded text-xs font-semibold transition">
+            [EXECUTE BATCH]
           </button>
         </div>
       </div>
 
-      <!-- Batch Results Table -->
-      <div id="batch-results-container" class="hidden space-y-4">
-        <h3 class="text-lg font-bold text-white flex items-center justify-between">
-          <span>檢測結果清單</span>
-          <span id="batch-summary-chips" class="text-xs font-normal"></span>
-        </h3>
-        <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-900/60">
-          <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-800/80 text-slate-400 font-mono uppercase text-xs">
+      <!-- Batch Result Table -->
+      <div id="batch-results-container" class="hidden space-y-3">
+        <div class="flex items-center justify-between border-b border-obsidian-800 pb-2 text-xs">
+          <span class="text-zinc-300 font-bold uppercase">EXECUTION RESULT STREAM</span>
+          <div id="batch-summary-chips" class="text-xs space-x-2"></div>
+        </div>
+
+        <div class="border border-obsidian-800 rounded bg-obsidian-900 overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-obsidian-850 text-zinc-400 border-b border-obsidian-800 uppercase text-[11px]">
               <tr>
-                <th class="p-3">目標網址</th>
-                <th class="p-3">狀態</th>
-                <th class="p-3">PHP 版本</th>
-                <th class="p-3">原因與說明</th>
+                <th class="p-2.5">TARGET</th>
+                <th class="p-2.5">STATUS</th>
+                <th class="p-2.5">PHP_VER</th>
+                <th class="p-2.5">EXIT</th>
+                <th class="p-2.5">DIAGNOSTIC</th>
               </tr>
             </thead>
-            <tbody id="batch-table-body" class="divide-y divide-slate-800 font-mono">
+            <tbody id="batch-table-body" class="divide-y divide-obsidian-800 text-[11px]">
             </tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- SECTION 3: ADMIN DASHBOARD (Back Office) -->
-    <div id="view-admin" class="hidden space-y-8 max-w-5xl mx-auto">
-      <!-- Admin Login View (If not logged in) -->
-      <div id="admin-login-box" class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-5">
-        <div class="text-center space-y-2">
-          <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-400 mx-auto flex items-center justify-center">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    <!-- ============================================== -->
+    <!-- VIEW 3: ADMIN DASHBOARD (agy admin) -->
+    <!-- ============================================== -->
+    <div id="view-admin" class="hidden space-y-6 max-w-5xl mx-auto">
+      
+      <!-- Login Prompt (If not authed) -->
+      <div id="admin-login-box" class="max-w-md mx-auto bg-obsidian-900 border border-obsidian-800 rounded-lg p-6 space-y-4">
+        <div class="border-b border-obsidian-800 pb-3">
+          <div class="text-xs text-ansi-amber font-bold flex items-center gap-1.5">
+            <span>🔒</span>
+            <span>AUTHENTICATION REQUIRED</span>
           </div>
-          <h2 class="text-xl font-bold text-white">後台管理員登入</h2>
-          <p class="text-xs text-slate-400">請輸入管理員密碼以進入審計日誌與排程巡檢面板</p>
+          <div class="text-xs text-zinc-500 mt-1 font-mono">user@edge:~$ agy auth --login</div>
         </div>
 
-        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <form onsubmit="handleAdminLogin(event)" class="space-y-3 text-xs">
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">帳號 (預設 admin)</label>
+            <label class="block text-zinc-400 mb-1">USERNAME</label>
             <input type="text" id="admin-user-input" value="admin" required
-              class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+              class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-2 text-zinc-200 focus:outline-none focus:border-ansi-green">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">管理員密碼</label>
-            <input type="password" id="admin-pass-input" placeholder="請輸入管理密碼" required
-              class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+            <label class="block text-zinc-400 mb-1">PASSWORD / TOKEN</label>
+            <input type="password" id="admin-pass-input" placeholder="••••••••" required
+              class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-2 text-zinc-200 focus:outline-none focus:border-ansi-green">
           </div>
-          <p id="admin-login-error" class="text-xs text-rose-400 hidden"></p>
-          <button type="submit" class="w-full py-2.5 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg shadow-md transition">
-            登入管理後台
+          <p id="admin-login-error" class="text-ansi-red text-xs hidden"></p>
+          <button type="submit" class="w-full py-2 bg-obsidian-800 hover:bg-obsidian-700 text-ansi-green border border-obsidian-700 rounded font-bold transition">
+            [AUTHENTICATE]
           </button>
         </form>
       </div>
 
-      <!-- Admin Panel View (If logged in) -->
+      <!-- Admin Management Console (If authed) -->
       <div id="admin-panel" class="hidden space-y-6">
-        <!-- Top bar with logout -->
-        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-          <div>
-            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-              🛡️ 後台安全儀表板
-              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">已驗證管理員</span>
-            </h2>
-            <p class="text-xs text-slate-400">D1 資料庫日誌審計、排程巡檢與告警設定</p>
+        
+        <!-- Header & Telemetry Block -->
+        <div class="border border-obsidian-800 rounded-lg bg-obsidian-900 p-4 space-y-3">
+          <div class="flex items-center justify-between border-b border-obsidian-800 pb-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-ansi-green font-bold">●</span>
+              <span class="text-white font-bold tracking-wider uppercase text-[11px]">TELEMETRY & AUDIT CONSOLE</span>
+              <span class="text-zinc-500 text-[10px]">[D1: CONNECTED]</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="loadAdminData()" class="px-2 py-0.5 bg-obsidian-850 hover:bg-obsidian-800 text-zinc-300 border border-obsidian-750 text-[11px] rounded">
+                [REFRESH]
+              </button>
+              <button onclick="handleAdminLogout()" class="px-2 py-0.5 bg-obsidian-850 hover:bg-rose-950 text-ansi-red border border-rose-900/50 text-[11px] rounded">
+                [LOGOUT]
+              </button>
+            </div>
           </div>
-          <div class="flex items-center gap-3">
-            <button onclick="loadAdminData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 rounded-lg transition">🔄 重新整理</button>
-            <button onclick="handleAdminLogout()" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-medium rounded-lg transition">登出</button>
+
+          <!-- Telemetry Metric Strip -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div class="bg-obsidian-950 border border-obsidian-800 rounded p-2.5">
+              <div class="text-[10px] text-zinc-500 uppercase">TOTAL_SCANS</div>
+              <div id="stat-total" class="text-lg font-bold text-zinc-100 font-mono mt-0.5">0</div>
+            </div>
+            <div class="bg-obsidian-950 border border-obsidian-800 rounded p-2.5">
+              <div class="text-[10px] text-ansi-red uppercase">VULNERABLE_DETECTED</div>
+              <div id="stat-vuln" class="text-lg font-bold text-ansi-red font-mono mt-0.5">0</div>
+            </div>
+            <div class="bg-obsidian-950 border border-obsidian-800 rounded p-2.5">
+              <div class="text-[10px] text-ansi-green uppercase">SAFE_PATCHED</div>
+              <div id="stat-safe" class="text-lg font-bold text-ansi-green font-mono mt-0.5">0</div>
+            </div>
+            <div class="bg-obsidian-950 border border-obsidian-800 rounded p-2.5">
+              <div class="text-[10px] text-ansi-cyan uppercase">CRON_MONITORS</div>
+              <div id="stat-monitored" class="text-lg font-bold text-ansi-cyan font-mono mt-0.5">0</div>
+            </div>
           </div>
         </div>
 
-        <!-- Metric Stat Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
-            <div class="text-xs text-slate-400 uppercase tracking-wider">總掃描次數</div>
-            <div id="stat-total" class="text-2xl font-bold text-white font-mono mt-1">-</div>
-          </div>
-          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
-            <div class="text-xs text-rose-400 uppercase tracking-wider">潛在受威脅</div>
-            <div id="stat-vuln" class="text-2xl font-bold text-rose-400 font-mono mt-1">-</div>
-          </div>
-          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
-            <div class="text-xs text-emerald-400 uppercase tracking-wider">已修復/安全</div>
-            <div id="stat-safe" class="text-2xl font-bold text-emerald-400 font-mono mt-1">-</div>
-          </div>
-          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4">
-            <div class="text-xs text-sky-400 uppercase tracking-wider">排程監控站台</div>
-            <div id="stat-monitored" class="text-2xl font-bold text-sky-400 font-mono mt-1">-</div>
-          </div>
-        </div>
-
-        <!-- Tab control inside Admin -->
-        <div class="flex border-b border-slate-800 space-x-4">
-          <button id="admin-subtab-scans-btn" onclick="switchAdminSubTab('scans')" class="pb-2 text-sm font-semibold border-b-2 border-sky-400 text-sky-400">
-            歷史檢測審計紀錄
+        <!-- Subcommands Navigation -->
+        <div class="flex border-b border-obsidian-800 text-xs space-x-3">
+          <button id="admin-subtab-scans-btn" onclick="switchAdminSubTab('scans')" class="pb-2 border-b-2 border-ansi-green text-ansi-green font-bold">
+            [1] agy scans --history
           </button>
-          <button id="admin-subtab-monitors-btn" onclick="switchAdminSubTab('monitors')" class="pb-2 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white">
-            排程巡檢名單 (Cron)
+          <button id="admin-subtab-monitors-btn" onclick="switchAdminSubTab('monitors')" class="pb-2 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200">
+            [2] agy monitors --daemon
           </button>
-          <button id="admin-subtab-settings-btn" onclick="switchAdminSubTab('settings')" class="pb-2 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white">
-            告警通知設定 (Webhook)
+          <button id="admin-subtab-settings-btn" onclick="switchAdminSubTab('settings')" class="pb-2 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200">
+            [3] agy alert --webhook
           </button>
         </div>
 
         <!-- SUBTAB 1: Scans History -->
-        <div id="admin-subtab-scans" class="space-y-4">
-          <div class="flex items-center justify-between gap-4">
-            <input type="text" id="admin-search-scan" oninput="filterAdminScans()" placeholder="搜尋網址、網域或狀態..."
-              class="w-full max-w-sm bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500">
-            <button onclick="clearScanLogs()" class="px-3 py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs rounded-lg transition whitespace-nowrap">
-              清空歷史
+        <div id="admin-subtab-scans" class="space-y-3">
+          <div class="flex items-center justify-between gap-3 text-xs">
+            <input type="text" id="admin-search-scan" oninput="filterAdminScans()" placeholder="grep URL / STATUS / PHP_VER..."
+              class="w-full max-w-sm bg-obsidian-950 border border-obsidian-750 rounded px-2.5 py-1.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-ansi-green">
+            <button onclick="clearScanLogs()" class="px-2.5 py-1.5 bg-obsidian-900 hover:bg-rose-950 text-ansi-red border border-obsidian-700 text-xs rounded transition whitespace-nowrap">
+              [TRUNCATE LOGS]
             </button>
           </div>
-          <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-900/60">
+
+          <div class="border border-obsidian-800 rounded bg-obsidian-900 overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-800/80 text-slate-400 font-mono uppercase">
+              <thead class="bg-obsidian-850 text-zinc-400 border-b border-obsidian-800 uppercase text-[10px]">
                 <tr>
-                  <th class="p-3">時間 (UTC)</th>
-                  <th class="p-3">目標網址</th>
-                  <th class="p-3">狀態</th>
-                  <th class="p-3">版本</th>
-                  <th class="p-3">原因</th>
-                  <th class="p-3">操作</th>
+                  <th class="p-2.5">TIMESTAMP (UTC)</th>
+                  <th class="p-2.5">TARGET</th>
+                  <th class="p-2.5">STATUS</th>
+                  <th class="p-2.5">VERSION</th>
+                  <th class="p-2.5">REASON</th>
+                  <th class="p-2.5">ACTION</th>
                 </tr>
               </thead>
-              <tbody id="admin-scans-tbody" class="divide-y divide-slate-800 font-mono">
-                <tr><td colspan="6" class="p-4 text-center text-slate-500">載入中...</td></tr>
+              <tbody id="admin-scans-tbody" class="divide-y divide-obsidian-800 text-[11px]">
+                <tr><td colspan="6" class="p-4 text-center text-zinc-500">Loading audit records...</td></tr>
               </tbody>
             </table>
           </div>
@@ -313,56 +348,62 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
 
         <!-- SUBTAB 2: Monitored Targets -->
         <div id="admin-subtab-monitors" class="hidden space-y-4">
-          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row gap-3 items-end">
+          <div class="bg-obsidian-900 border border-obsidian-800 rounded p-3 text-xs flex flex-col sm:flex-row gap-2 items-end">
             <div class="flex-1 w-full">
-              <label class="block text-xs text-slate-400 mb-1">目標網址 (URL)</label>
-              <input type="text" id="new-monitor-url" placeholder="https://my-company-portal.com" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white">
+              <label class="block text-zinc-400 text-[10px] mb-1">TARGET URL</label>
+              <input type="text" id="new-monitor-url" placeholder="https://internal-app.domain.com" class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-2 text-xs text-white">
             </div>
             <div class="w-full sm:w-48">
-              <label class="block text-xs text-slate-400 mb-1">站台標籤 (Label)</label>
-              <input type="text" id="new-monitor-label" placeholder="核心業務站點" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white">
+              <label class="block text-zinc-400 text-[10px] mb-1">LABEL</label>
+              <input type="text" id="new-monitor-label" placeholder="Core Portal" class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-2 text-xs text-white">
             </div>
-            <button onclick="addMonitoredTarget()" class="w-full sm:w-auto px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white font-medium text-xs rounded-lg transition">
-              新增監控
+            <button onclick="addMonitoredTarget()" class="w-full sm:w-auto px-3 py-2 bg-obsidian-800 hover:bg-obsidian-700 text-ansi-green border border-obsidian-700 text-xs font-semibold rounded">
+              [ADD TARGET]
             </button>
           </div>
 
-          <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-900/60">
+          <div class="border border-obsidian-800 rounded bg-obsidian-900 overflow-x-auto">
             <table class="w-full text-left text-xs">
-              <thead class="bg-slate-800/80 text-slate-400 font-mono uppercase">
+              <thead class="bg-obsidian-850 text-zinc-400 border-b border-obsidian-800 uppercase text-[10px]">
                 <tr>
-                  <th class="p-3">標籤</th>
-                  <th class="p-3">URL</th>
-                  <th class="p-3">最後狀態</th>
-                  <th class="p-3">最後偵測版本</th>
-                  <th class="p-3">上次巡檢時間</th>
-                  <th class="p-3">操作</th>
+                  <th class="p-2.5">LABEL</th>
+                  <th class="p-2.5">URL</th>
+                  <th class="p-2.5">LAST_STATUS</th>
+                  <th class="p-2.5">VERSION</th>
+                  <th class="p-2.5">LAST_CHECKED</th>
+                  <th class="p-2.5">OPS</th>
                 </tr>
               </thead>
-              <tbody id="admin-monitors-tbody" class="divide-y divide-slate-800 font-mono">
-                <tr><td colspan="6" class="p-4 text-center text-slate-500">載入中...</td></tr>
+              <tbody id="admin-monitors-tbody" class="divide-y divide-obsidian-800 text-[11px]">
+                <tr><td colspan="6" class="p-4 text-center text-zinc-500">No daemon targets registered.</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- SUBTAB 3: Settings -->
+        <!-- SUBTAB 3: Alert Settings -->
         <div id="admin-subtab-settings" class="hidden space-y-4 max-w-xl">
-          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 space-y-4">
-            <h3 class="text-sm font-bold text-white">🔔 Webhook 告警通知設定</h3>
-            <p class="text-xs text-slate-400">當 Cloudflare Cron 排程巡檢發現站點狀態為「潛在受威脅」時，將向此 Webhook 發送警報。</p>
+          <div class="bg-obsidian-900 border border-obsidian-800 rounded p-4 space-y-3 text-xs">
+            <div class="border-b border-obsidian-800 pb-2">
+              <span class="text-zinc-200 font-bold uppercase text-[11px]">WEBHOOK NOTIFICATION PIPELINE</span>
+              <p class="text-zinc-500 text-[10px] mt-0.5">Dispatches alert payload when scheduled cron probe detects vulnerable PHP version.</p>
+            </div>
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Webhook URL (支援 Discord / Slack / 自訂服務)</label>
+              <label class="block text-zinc-400 text-[10px] mb-1">WEBHOOK ENDPOINT (DISCORD / SLACK / SIEM)</label>
               <input type="url" id="setting-webhook-url" placeholder="https://discord.com/api/webhooks/..."
-                class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white font-mono">
+                class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-2 text-xs text-white font-mono">
             </div>
-            <div class="flex items-center space-x-2">
-              <input type="checkbox" id="setting-webhook-enabled" class="rounded bg-slate-950 border-slate-700 text-sky-500 focus:ring-0">
-              <label for="setting-webhook-enabled" class="text-xs text-slate-300">啟用巡檢異常告警通知</label>
+            <div class="flex items-center space-x-2 pt-1">
+              <input type="checkbox" id="setting-webhook-enabled" class="rounded bg-obsidian-950 border-obsidian-700 text-ansi-green focus:ring-0">
+              <label for="setting-webhook-enabled" class="text-zinc-300 text-xs">Enable Cron Trigger Alerts</label>
             </div>
-            <div class="pt-2 flex items-center gap-3">
-              <button onclick="saveAdminSettings()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white font-medium text-xs rounded-lg transition">儲存設定</button>
-              <button onclick="testWebhook()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-lg transition">發送測試告警</button>
+            <div class="pt-2 flex items-center gap-2">
+              <button onclick="saveAdminSettings()" class="px-3 py-1.5 bg-obsidian-800 hover:bg-obsidian-700 text-ansi-green border border-obsidian-700 text-xs font-semibold rounded">
+                [SAVE CONFIG]
+              </button>
+              <button onclick="testWebhook()" class="px-3 py-1.5 bg-obsidian-850 hover:bg-obsidian-800 text-zinc-300 border border-obsidian-750 text-xs rounded">
+                [TEST DISPATCH]
+              </button>
             </div>
           </div>
         </div>
@@ -372,21 +413,24 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
 
   </main>
 
-  <!-- Footer -->
-  <footer class="relative z-10 border-t border-slate-800/60 bg-slate-950 py-6 text-center text-xs text-slate-500">
+  <!-- Terminal Status Footer Bar -->
+  <footer class="border-t border-obsidian-800 bg-obsidian-950 py-3 text-[11px] text-zinc-500">
     <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <span>由 <a href="https://github.com/tw365-org/php2shell-checker-cf" target="_blank" class="text-sky-400 hover:underline">tw365-org</a> 構建與維護</span>
-        <span>•</span>
-        <span>上游開源：<a href="https://github.com/openai/php2shell-checker" target="_blank" class="text-slate-400 hover:underline">openai/php2shell-checker</a></span>
+      <div class="flex items-center space-x-2">
+        <span class="text-ansi-green">❯_</span>
+        <span>agy-cli compatible</span>
+        <span>::</span>
+        <a href="https://github.com/tw365-org/php2shell-checker-cf" target="_blank" class="text-zinc-400 hover:text-ansi-green">tw365-org/php2shell-checker-cf</a>
+        <span>::</span>
+        <a href="https://github.com/openai/php2shell-checker" target="_blank" class="hover:text-zinc-300">upstream: openai/php2shell-checker</a>
       </div>
       <div>
-        <span>運行於 Cloudflare Workers & D1 Edge Runtime</span>
+        <span>RUNTIME: Cloudflare Workers + D1 Database</span>
       </div>
     </div>
   </footer>
 
-  <!-- Client JavaScript Logic -->
+  <!-- Client Script for Terminal UX -->
   <script>
     // Tab Switching
     function switchTab(tab) {
@@ -394,13 +438,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       document.getElementById('view-batch').classList.toggle('hidden', tab !== 'batch');
       document.getElementById('view-admin').classList.toggle('hidden', tab !== 'admin');
 
-      const tabs = ['front', 'batch', 'admin'];
-      tabs.forEach(t => {
+      ['front', 'batch', 'admin'].forEach(t => {
         const btn = document.getElementById('nav-btn-' + t);
         if (t === tab) {
-          btn.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-sky-500/10 text-sky-400 border border-sky-500/30";
+          btn.className = "px-2.5 py-1 rounded bg-obsidian-800 text-ansi-green border border-obsidian-700 font-semibold transition";
         } else {
-          btn.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800";
+          btn.className = "px-2.5 py-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition";
         }
       });
 
@@ -414,8 +457,8 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     }
 
     function toggleTheme() {
-      document.documentElement.classList.toggle('dark');
-      document.documentElement.classList.toggle('light');
+      // Toggle high contrast terminal mode
+      document.body.classList.toggle('contrast-125');
     }
 
     // Single URL Scan
@@ -442,7 +485,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         const data = await res.json();
         renderScanResult(data);
       } catch (err) {
-        alert('檢測請求失敗：' + err.message);
+        alert('Diagnostic request failed: ' + err.message);
       } finally {
         submitBtn.disabled = false;
         spinner.classList.add('hidden');
@@ -453,76 +496,95 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       const area = document.getElementById('scan-result');
       area.classList.remove('hidden');
 
-      let badgeBg = 'bg-amber-500/10 text-amber-400 border-amber-500/30';
-      let statusLabel = 'UNKNOWN 未知 / 無法判定';
+      let statusColor = 'text-ansi-amber border-amber-900/60 bg-amber-950/20';
+      let statusTag = '[UNKNOWN: 3]';
       let icon = '❓';
 
       if (data.patch_status === 'ok') {
-        badgeBg = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
-        statusLabel = 'SAFE / OK 已修復或安全版本';
-        icon = '✅';
+        statusColor = 'text-ansi-green border-emerald-900/60 bg-emerald-950/20';
+        statusTag = '[OK: 0] UPSTREAM_FIXED';
+        icon = '✔';
       } else if (data.patch_status === 'potentially_vulnerable') {
-        badgeBg = 'bg-rose-500/10 text-rose-400 border-rose-500/30 animate-pulse';
-        statusLabel = 'POTENTIALLY VULNERABLE 潛在受威脅';
-        icon = '⚠️';
+        statusColor = 'text-ansi-red border-rose-900/60 bg-rose-950/20';
+        statusTag = '[VULNERABLE: 1] POTENTIALLY_EXPOSED';
+        icon = '✖';
       }
 
       area.innerHTML = \`
-        <div class="border border-slate-800 bg-slate-900/90 rounded-2xl p-6 shadow-2xl space-y-4">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+        <div class="border border-obsidian-800 bg-obsidian-900 rounded-lg p-4 sm:p-5 space-y-4 font-mono text-xs">
+          <!-- Status Banner -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-obsidian-800 pb-3">
             <div>
-              <div class="text-xs text-slate-400 uppercase font-mono">檢測目標網址</div>
-              <div class="text-lg font-bold text-white font-mono break-all mt-0.5">\${escapeHtml(data.url)}</div>
+              <div class="text-[10px] text-zinc-500 uppercase tracking-widest">DIAGNOSTIC TARGET</div>
+              <div class="text-sm font-bold text-white break-all mt-0.5">\${escapeHtml(data.url)}</div>
             </div>
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border \${badgeBg}">
-                <span>\${icon}</span>
-                <span>\${statusLabel}</span>
+              <span class="px-2.5 py-1 rounded text-xs font-bold border \${statusColor} font-mono">
+                \${icon} \${statusTag}
               </span>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-              <span class="text-xs text-slate-400 block mb-1">偵測到的 PHP 版本</span>
-              <span class="text-base font-bold font-mono \${data.php_version ? 'text-sky-400' : 'text-slate-500'}">
-                \${data.php_version ? 'PHP ' + escapeHtml(data.php_version) : '未公開或無標頭'}
+          <!-- Version & Exit Code Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div class="bg-obsidian-950 p-2.5 rounded border border-obsidian-800">
+              <span class="text-[10px] text-zinc-500 block uppercase">DETECTED PHP</span>
+              <span class="text-xs font-bold \${data.php_version ? 'text-ansi-cyan' : 'text-zinc-600'}">
+                \${data.php_version ? 'PHP ' + escapeHtml(data.php_version) : 'NOT ADVERTISED'}
               </span>
             </div>
-            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-              <span class="text-xs text-slate-400 block mb-1">CVE 覆蓋範圍</span>
-              <span class="text-xs font-mono text-slate-300">CVE-2026-109618 & 109619</span>
+            <div class="bg-obsidian-950 p-2.5 rounded border border-obsidian-800">
+              <span class="text-[10px] text-zinc-500 block uppercase">EXIT CODE</span>
+              <span class="text-xs font-bold text-zinc-300">CODE \${data.exit_code}</span>
+            </div>
+            <div class="bg-obsidian-950 p-2.5 rounded border border-obsidian-800">
+              <span class="text-[10px] text-zinc-500 block uppercase">CVE REFERENCES</span>
+              <span class="text-xs text-zinc-400">109618 / 109619</span>
             </div>
           </div>
 
-          <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs space-y-2">
-            <div class="text-slate-400 font-semibold">分析詳細原因：</div>
-            <p class="text-slate-200 leading-relaxed font-mono">\${escapeHtml(data.reason)}</p>
+          <!-- Reason Box -->
+          <div class="bg-obsidian-950 p-3 rounded border border-obsidian-800 space-y-1">
+            <div class="text-[10px] text-zinc-500 uppercase">DIAGNOSTIC REASON</div>
+            <p class="text-zinc-300 leading-relaxed">\${escapeHtml(data.reason)}</p>
           </div>
 
+          <!-- Headers Accordion -->
           \${data.headers_summary ? \`
-            <details class="text-xs text-slate-400">
-              <summary class="cursor-pointer hover:text-slate-200 py-1 font-mono">檢視伺服器回應標頭摘要 (HTTP Headers)</summary>
-              <pre class="mt-2 p-3 bg-slate-950 rounded-lg border border-slate-800 font-mono text-slate-300 overflow-x-auto whitespace-pre-wrap">\${escapeHtml(data.headers_summary)}</pre>
+            <details class="text-[11px] text-zinc-400">
+              <summary class="cursor-pointer hover:text-zinc-200 py-1 text-zinc-500">[+] SHOW RAW RESPONSE HEADERS</summary>
+              <pre class="mt-2 p-2.5 bg-obsidian-950 rounded border border-obsidian-800 text-zinc-300 overflow-x-auto whitespace-pre-wrap font-mono text-[11px]">\${escapeHtml(data.headers_summary)}</pre>
             </details>
           \` : ''}
 
-          \${data.id ? \`
-            <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-xs">
-              <span class="text-slate-500 font-mono">報告代碼: \${data.id}</span>
-              <button onclick="copyReportLink('\${data.id}')" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 rounded-lg transition flex items-center gap-1">
-                📋 複製分享短鏈
+          <!-- CLI Quick Actions -->
+          <div class="flex flex-wrap items-center justify-between pt-2 border-t border-obsidian-800 gap-2">
+            <div class="flex items-center space-x-2">
+              <button onclick="copyCliCmd('\${escapeHtml(data.url)}')" class="px-2 py-1 bg-obsidian-850 hover:bg-obsidian-800 text-zinc-300 border border-obsidian-750 rounded text-[11px]">
+                $ agy check "\${escapeHtml(data.url)}" [COPY]
               </button>
             </div>
-          \` : ''}
+            \${data.id ? \`
+              <button onclick="copyReportLink('\${data.id}')" class="px-2 py-1 bg-obsidian-850 hover:bg-obsidian-800 text-ansi-green border border-obsidian-750 rounded text-[11px]">
+                [COPY SHAREABLE LINK]
+              </button>
+            \` : ''}
+          </div>
         </div>
       \`;
+    }
+
+    function copyCliCmd(url) {
+      const cmd = 'agy check "' + url + '"';
+      navigator.clipboard.writeText(cmd).then(() => {
+        alert('CLI command copied to clipboard:\\n' + cmd);
+      });
     }
 
     function copyReportLink(id) {
       const url = window.location.origin + '/?report=' + id;
       navigator.clipboard.writeText(url).then(() => {
-        alert('檢測報告短鏈已複製至剪貼簿：\\n' + url);
+        alert('Diagnostic report URL copied:\\n' + url);
       });
     }
 
@@ -530,12 +592,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     async function handleBatchScan() {
       const textarea = document.getElementById('batch-urls');
       const lines = textarea.value.split('\\n').map(l => l.trim()).filter(Boolean);
-      if (lines.length === 0) return alert('請至少輸入一個網址');
-      if (lines.length > 20) return alert('為避免邊緣資源耗盡，單次批次最多支援 20 個網址');
+      if (lines.length === 0) return alert('Enter at least one target URL');
+      if (lines.length > 20) return alert('Maximum 20 targets per batch run');
 
       const btn = document.getElementById('btn-batch-scan');
       btn.disabled = true;
-      btn.innerText = '檢測中...';
+      btn.innerText = '[EXECUTING PROBES...]';
 
       try {
         const res = await fetch('/api/check', {
@@ -546,10 +608,10 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         const data = await res.json();
         renderBatchResults(data.results || []);
       } catch (err) {
-        alert('批次掃描失敗：' + err.message);
+        alert('Batch scan failed: ' + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerText = '開始批次檢測';
+        btn.innerText = '[EXECUTE BATCH]';
       }
     }
 
@@ -567,28 +629,29 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       });
 
       chips.innerHTML = \`
-        <span class="text-rose-400 mr-2">受威脅: \${vuln}</span>
-        <span class="text-emerald-400 mr-2">安全: \${ok}</span>
-        <span class="text-amber-400">未知: \${unk}</span>
+        <span class="text-ansi-red font-bold">[VULN: \${vuln}]</span>
+        <span class="text-ansi-green font-bold">[OK: \${ok}]</span>
+        <span class="text-ansi-amber font-bold">[UNK: \${unk}]</span>
       \`;
 
       tbody.innerHTML = results.map(r => {
-        let badge = '<span class="text-amber-400 font-bold">UNKNOWN</span>';
-        if (r.patch_status === 'ok') badge = '<span class="text-emerald-400 font-bold">OK</span>';
-        if (r.patch_status === 'potentially_vulnerable') badge = '<span class="text-rose-400 font-bold">VULNERABLE</span>';
+        let badge = '<span class="text-ansi-amber">[UNKNOWN]</span>';
+        if (r.patch_status === 'ok') badge = '<span class="text-ansi-green">[OK]</span>';
+        if (r.patch_status === 'potentially_vulnerable') badge = '<span class="text-ansi-red">[VULN]</span>';
 
         return \`
-          <tr class="hover:bg-slate-800/40">
-            <td class="p-3 text-white truncate max-w-xs">\${escapeHtml(r.url)}</td>
-            <td class="p-3">\${badge}</td>
-            <td class="p-3 text-sky-400">\${escapeHtml(r.php_version || '-')}</td>
-            <td class="p-3 text-slate-300 text-xs truncate max-w-md">\${escapeHtml(r.reason)}</td>
+          <tr class="hover:bg-obsidian-850">
+            <td class="p-2 text-white truncate max-w-xs">\${escapeHtml(r.url)}</td>
+            <td class="p-2">\${badge}</td>
+            <td class="p-2 text-ansi-cyan">\${escapeHtml(r.php_version || '-')}</td>
+            <td class="p-2 text-zinc-400">\${r.exit_code}</td>
+            <td class="p-2 text-zinc-400 truncate max-w-sm">\${escapeHtml(r.reason)}</td>
           </tr>
         \`;
       }).join('');
     }
 
-    // Admin Auth & Functions
+    // Admin Authentication & Subcommand Handlers
     let adminToken = localStorage.getItem('cf_admin_token');
 
     async function checkAdminSession() {
@@ -641,11 +704,11 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
           showAdminPanel();
           loadAdminData();
         } else {
-          errBox.innerText = data.error || '帳號或密碼錯誤';
+          errBox.innerText = 'Authentication failed: ' + (data.error || 'Invalid credentials');
           errBox.classList.remove('hidden');
         }
       } catch (err) {
-        errBox.innerText = '登入失敗：' + err.message;
+        errBox.innerText = 'Network error: ' + err.message;
         errBox.classList.remove('hidden');
       }
     }
@@ -690,30 +753,30 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
           document.getElementById('setting-webhook-enabled').checked = cfg.webhook_enabled === '1';
         }
       } catch (err) {
-        console.error('Failed to load admin data', err);
+        console.error('Failed to load admin telemetry', err);
       }
     }
 
     function renderAdminScans(scans) {
       const tbody = document.getElementById('admin-scans-tbody');
       if (scans.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">尚無檢測紀錄</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-zinc-500">No audit records found.</td></tr>';
         return;
       }
       tbody.innerHTML = scans.map(s => {
-        let statusBadge = '<span class="text-amber-400">UNKNOWN</span>';
-        if (s.patch_status === 'ok') statusBadge = '<span class="text-emerald-400">OK</span>';
-        if (s.patch_status === 'potentially_vulnerable') statusBadge = '<span class="text-rose-400">VULNERABLE</span>';
+        let statusBadge = '<span class="text-ansi-amber">[UNKNOWN]</span>';
+        if (s.patch_status === 'ok') statusBadge = '<span class="text-ansi-green">[OK]</span>';
+        if (s.patch_status === 'potentially_vulnerable') statusBadge = '<span class="text-ansi-red">[VULN]</span>';
 
         return \`
-          <tr class="hover:bg-slate-800/40">
-            <td class="p-3 text-slate-400 text-xs whitespace-nowrap">\${escapeHtml(s.created_at || '-')}</td>
-            <td class="p-3 text-white truncate max-w-xs">\${escapeHtml(s.url)}</td>
-            <td class="p-3">\${statusBadge}</td>
-            <td class="p-3 text-sky-400">\${escapeHtml(s.php_version || '-')}</td>
-            <td class="p-3 text-slate-400 text-xs truncate max-w-md">\${escapeHtml(s.reason)}</td>
-            <td class="p-3">
-              <button onclick="deleteScan('\${s.id}')" class="text-rose-400 hover:text-rose-300">刪除</button>
+          <tr class="hover:bg-obsidian-850">
+            <td class="p-2.5 text-zinc-400 whitespace-nowrap">\${escapeHtml(s.created_at || '-')}</td>
+            <td class="p-2.5 text-white truncate max-w-xs">\${escapeHtml(s.url)}</td>
+            <td class="p-2.5">\${statusBadge}</td>
+            <td class="p-2.5 text-ansi-cyan">\${escapeHtml(s.php_version || '-')}</td>
+            <td class="p-2.5 text-zinc-400 truncate max-w-xs">\${escapeHtml(s.reason)}</td>
+            <td class="p-2.5">
+              <button onclick="deleteScan('\${s.id}')" class="text-ansi-red hover:underline">[RM]</button>
             </td>
           </tr>
         \`;
@@ -731,7 +794,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     }
 
     async function deleteScan(id) {
-      if (!confirm('確定要刪除這筆檢測紀錄嗎？')) return;
+      if (!confirm('Confirm deletion of record ' + id + '?')) return;
       await fetch('/api/admin/scans/' + id, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + adminToken }
@@ -740,7 +803,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     }
 
     async function clearScanLogs() {
-      if (!confirm('警告：確定要清空所有歷史檢測日誌嗎？此操作不可逆！')) return;
+      if (!confirm('WARNING: Truncate all historical scan records from D1?')) return;
       await fetch('/api/admin/scans/clear', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + adminToken }
@@ -751,19 +814,19 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     function renderAdminMonitors(monitors) {
       const tbody = document.getElementById('admin-monitors-tbody');
       if (monitors.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">尚未建立任何排程監控站台</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-zinc-500">No daemon targets registered.</td></tr>';
         return;
       }
       tbody.innerHTML = monitors.map(m => \`
-        <tr class="hover:bg-slate-800/40">
-          <td class="p-3 text-white font-semibold">\${escapeHtml(m.label)}</td>
-          <td class="p-3 text-slate-300 truncate max-w-xs">\${escapeHtml(m.url)}</td>
-          <td class="p-3">\${m.last_status === 'ok' ? '<span class="text-emerald-400">OK</span>' : m.last_status === 'potentially_vulnerable' ? '<span class="text-rose-400">VULNERABLE</span>' : '<span class="text-amber-400">UNKNOWN</span>'}</td>
-          <td class="p-3 text-sky-400">\${escapeHtml(m.last_version || '-')}</td>
-          <td class="p-3 text-slate-400 text-xs">\${escapeHtml(m.last_checked_at || '尚未執行')}</td>
-          <td class="p-3 space-x-2">
-            <button onclick="triggerMonitorScan('\${m.id}')" class="text-sky-400 hover:text-sky-300">立即掃描</button>
-            <button onclick="deleteMonitor('\${m.id}')" class="text-rose-400 hover:text-rose-300">移除</button>
+        <tr class="hover:bg-obsidian-850">
+          <td class="p-2.5 text-white font-bold">\${escapeHtml(m.label)}</td>
+          <td class="p-2.5 text-zinc-300 truncate max-w-xs">\${escapeHtml(m.url)}</td>
+          <td class="p-2.5">\${m.last_status === 'ok' ? '<span class="text-ansi-green">[OK]</span>' : m.last_status === 'potentially_vulnerable' ? '<span class="text-ansi-red">[VULN]</span>' : '<span class="text-ansi-amber">[UNKNOWN]</span>'}</td>
+          <td class="p-2.5 text-ansi-cyan">\${escapeHtml(m.last_version || '-')}</td>
+          <td class="p-2.5 text-zinc-400 whitespace-nowrap">\${escapeHtml(m.last_checked_at || 'PENDING')}</td>
+          <td class="p-2.5 space-x-2">
+            <button onclick="triggerMonitorScan('\${m.id}')" class="text-ansi-cyan hover:underline">[PROBE]</button>
+            <button onclick="deleteMonitor('\${m.id}')" class="text-ansi-red hover:underline">[RM]</button>
           </td>
         </tr>
       \`).join('');
@@ -772,7 +835,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     async function addMonitoredTarget() {
       const url = document.getElementById('new-monitor-url').value.trim();
       const label = document.getElementById('new-monitor-label').value.trim();
-      if (!url) return alert('請填寫目標 URL');
+      if (!url) return alert('Target URL required');
 
       await fetch('/api/admin/monitors', {
         method: 'POST',
@@ -789,12 +852,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + adminToken }
       });
-      alert('已觸發即時巡檢！');
+      alert('Immediate probe dispatched.');
       loadAdminData();
     }
 
     async function deleteMonitor(id) {
-      if (!confirm('確定移除此監控目標？')) return;
+      if (!confirm('Remove target from daemon list?')) return;
       await fetch('/api/admin/monitors/' + id, {
         method: 'DELETE',
         headers: { 'Authorization': 'Bearer ' + adminToken }
@@ -807,9 +870,9 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         document.getElementById('admin-subtab-' + s).classList.toggle('hidden', s !== sub);
         const btn = document.getElementById('admin-subtab-' + s + '-btn');
         if (s === sub) {
-          btn.className = "pb-2 text-sm font-semibold border-b-2 border-sky-400 text-sky-400";
+          btn.className = "pb-2 border-b-2 border-ansi-green text-ansi-green font-bold";
         } else {
-          btn.className = "pb-2 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white";
+          btn.className = "pb-2 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200";
         }
       });
     }
@@ -822,7 +885,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
         body: JSON.stringify({ webhook_url, webhook_enabled })
       });
-      alert('設定儲存成功！');
+      alert('Webhook config persisted to D1.');
     }
 
     async function testWebhook() {
@@ -831,7 +894,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         headers: { 'Authorization': 'Bearer ' + adminToken }
       });
       const data = await res.json();
-      alert(data.message || '已發送測試告警');
+      alert(data.message || 'Test alert dispatched.');
     }
 
     function escapeHtml(str) {
@@ -844,7 +907,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         .replace(/'/g, '&#39;');
     }
 
-    // Auto-load report if query param ?report=<id> exists
+    // Auto-load report if ?report=<id>
     window.addEventListener('DOMContentLoaded', async () => {
       const params = new URLSearchParams(window.location.search);
       const reportId = params.get('report');
@@ -858,6 +921,15 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         } catch (err) {
           console.error(err);
         }
+      }
+    });
+
+    // Keyboard Shortcuts: '/' focuses input, 'Escape' clears
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const input = document.getElementById('target-url');
+        if (input) input.focus();
       }
     });
   </script>
