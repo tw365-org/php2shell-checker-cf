@@ -1,0 +1,33 @@
+{
+  "name": "php2shell-checker-cf",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers & D1 fullstack implementation of OpenAI's php2shell-checker with modern UI and admin dashboard",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node phpcheck.test.js && node test/checker.test.js",
+    "d1:init:local": "wrangler d1 execute DB --local --file=./migrations/0001_init.sql",
+    "d1:init:remote": "wrangler d1 execute DB --remote --file=./migrations/0001_init.sql"
+  },
+  "keywords": [
+    "cloudflare",
+    "cloudflare-workers",
+    "d1",
+    "hono",
+    "php2shell",
+    "cve-2026-109618",
+    "cve-2026-109619",
+    "security-scanner"
+  ],
+  "author": "tw365-org",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "hono": "^4.7.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261019.1",
+    "typescript": "^5.8.2",
+    "wrangler": "^4.152.0"
+  }
+}
