@@ -219,6 +219,23 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10, lang: 'zh' |
     }
   }
 
+  let remediation: string | undefined = undefined
+  if (finalStatus === 'potentially_vulnerable') {
+    if (lang === 'en') {
+      remediation =
+        'Remediation Recommendations:\n' +
+        '1. Upstream PHP: Upgrade to 8.2.35, 8.3.36, 8.4.27, or 8.5.12.\n' +
+        '2. Debian / Ubuntu: sudo apt-get update && sudo apt-get --only-upgrade install php*-fpm (or libapache2-mod-php*)\n' +
+        '3. RHEL / Rocky: sudo dnf upgrade php*'
+    } else {
+      remediation =
+        '即用型修復建議：\n' +
+        '1. 官方版本：立即升級至 PHP 8.2.35、8.3.36、8.4.27 或 8.5.12 以上。\n' +
+        '2. Debian / Ubuntu：執行 sudo apt-get update && sudo apt-get --only-upgrade install php*-fpm (或 libapache2-mod-php*)\n' +
+        '3. RHEL / Rocky / AlmaLinux：執行 sudo dnf upgrade php*'
+    }
+  }
+
   const exitCodeMap: Record<PatchStatus, number> = {
     ok: 0,
     potentially_vulnerable: 1,
@@ -231,6 +248,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10, lang: 'zh' |
     patch_status: finalStatus,
     php_version: detectedVersion,
     reason,
+    remediation,
     exit_code: exitCodeMap[finalStatus] ?? 3,
     headers_summary: rawHeadersText || (lang === 'en' ? 'None detected' : '未偵測到標頭'),
     checked_at: new Date().toISOString(),

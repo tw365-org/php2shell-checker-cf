@@ -457,16 +457,43 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
           <span>::</span>
           <a href="https://github.com/openai/php2shell-checker" target="_blank" class="hover:text-zinc-300">upstream: openai/php2shell-checker</a>
         </div>
+        <!-- Wiz Citation Link -->
         <div>
+          <span>AI-SDLC Security: <a href="https://www.wiz.io" target="_blank" class="text-zinc-400 hover:text-ansi-green underline">Wiz Research</a></span>
+          <span>::</span>
           <span>RUNTIME: Cloudflare Workers + D1 Database</span>
         </div>
       </div>
 
+      <!-- Acceptable Use & Anti-Abuse Disclaimer -->
+      <div class="pt-2 border-t border-obsidian-900 text-[11px] sm:text-xs text-rose-400/90 leading-relaxed text-center sm:text-left flex items-start gap-1.5">
+        <span class="text-ansi-red font-bold shrink-0">🛑</span>
+        <span data-i18n="acceptableUsePolicy">
+          【合法授權與防濫用宣告】本專案為防禦性資安檢測工具，僅限授權自用（檢測自身擁有或取得明確授權許可之伺服器）。嚴禁將本工具用於未經授權之主機探測、惡意攻擊或非法網路活動；使用者須完全自行承擔一切法律責任。
+        </span>
+      </div>
+
       <!-- Explicit Tribute & Responsibility Statement conforming to antigravity.google/press guidelines -->
-      <div class="pt-2 border-t border-obsidian-900 text-[11px] sm:text-xs text-zinc-400/90 leading-relaxed text-center sm:text-left flex items-start gap-1.5">
+      <div class="pt-1.5 text-[11px] sm:text-xs text-zinc-400/90 leading-relaxed text-center sm:text-left flex items-start gap-1.5">
         <span class="text-ansi-amber font-bold shrink-0">⚖️</span>
         <span data-i18n="tributeStatement">
           【獨立專案與商標規範聲明】本系統為獨立社群開源專案，介面設計由衷致敬 Google Antigravity CLI (agy) 之終端極簡風格與操作體驗；本專案非 Google 官方產品，亦未受 Google LLC 贊助、認可或背書。Google 與 Antigravity 均為 Google LLC 之註冊商標。本專案之開源代碼維護、雲端部署與衍生營運責任均由作者與維護團隊（tw365-org）全權承擔與負責。
+        </span>
+      </div>
+
+      <!-- Wiz Framework Attribution Statement -->
+      <div class="pt-1.5 text-[11px] sm:text-xs text-zinc-500 leading-relaxed text-center sm:text-left flex items-start gap-1.5">
+        <span class="text-ansi-cyan font-bold shrink-0">📘</span>
+        <span data-i18n="wizAttribution">
+          【安全架構引用與出處】本專案之 AI-SDLC 分層防禦、即用型修復引導與邊緣資料隱私架構，深入參考並遵循 Wiz 發表之權威指南《Security for AI-Driven Development》（出處：Wiz Research, wiz.io）。特此致謝並標註出處。
+        </span>
+      </div>
+
+      <!-- Anti-Claude Style Satirical Manifesto -->
+      <div class="pt-1.5 text-[11px] sm:text-xs text-zinc-600 leading-relaxed text-center sm:text-left flex items-start gap-1.5">
+        <span class="text-zinc-500 font-bold shrink-0">☕</span>
+        <span data-i18n="antiClaudeStatement">
+          【美學堅持：嚴正拒絕 Claude 溫暖米黃拿鐵風】本頁面百分之百拒絕暖橘色、日落陶土、溫暖米黃與故作高雅的文青圓角（亦即俗稱的「Claude 咖啡廳閒聊風」）。這裡是硬核工程師終端，只有黑曜石底色、ANSI 退出碼與冷硬真實的資安診斷，不賣拿鐵也不陪聊。（註：「Claude」為 Anthropic PBC 之商標，此處僅作為對常見 AI 介面氾濫套路之幽默風格評論，與 Anthropic 無任何關聯）。
         </span>
       </div>
     </div>
@@ -545,7 +572,11 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         copyCliLabel: '[複製 CLI 指令]',
         copyReportLabel: '[複製獨立報告短鏈]',
         notAdvertised: '未公開或無標頭',
+        remediationTitle: '即用型修復命令建議 (Wiz AI-SDLC Remediation)',
+        acceptableUsePolicy: '【合法授權與防濫用宣告】本專案為防禦性資安檢測工具，僅限授權自用（檢測自身擁有或取得明確授權許可之伺服器）。嚴禁將本工具用於未經授權之主機探測、惡意攻擊或非法網路活動；使用者須完全自行承擔一切法律責任。',
         tributeStatement: '【獨立專案與商標規範聲明】本系統為獨立社群開源專案，介面設計由衷致敬 Google Antigravity CLI (agy) 之終端極簡風格與操作體驗；本專案非 Google 官方產品，亦未受 Google LLC 贊助、認可或背書。Google 與 Antigravity 均為 Google LLC 之註冊商標。本專案之開源代碼維護、雲端部署與衍生營運責任均由作者與維護團隊（tw365-org）全權承擔與負責。',
+        wizAttribution: '【安全架構引用與出處】本專案之 AI-SDLC 分層防禦、即用型修復引導與邊緣資料隱私架構，深入參考並遵循 Wiz 發表之權威指南《Security for AI-Driven Development》（出處：Wiz Research, wiz.io）。特此致謝並標註出處。',
+        antiClaudeStatement: '【美學堅持：嚴正拒絕 Claude 溫暖米黃拿鐵風】本頁面百分之百拒絕暖橘色、日落陶土、溫暖米黃與故作高雅的文青圓角（亦即俗稱的「Claude 咖啡廳閒聊風」）。這裡是硬核工程師終端，只有黑曜石底色、ANSI 退出碼與冷硬真實的資安診斷，不賣拿鐵也不陪聊。（註：「Claude」為 Anthropic PBC 之商標，此處僅作為對常見 AI 介面氾濫套路之幽默風格評論，與 Anthropic 無任何關聯）。',
       },
       en: {
         navCheck: '[1] agy check',
@@ -614,7 +645,11 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         copyCliLabel: '[COPY CLI CMD]',
         copyReportLabel: '[COPY SHAREABLE LINK]',
         notAdvertised: 'NOT ADVERTISED',
+        remediationTitle: 'ACTIONABLE REMEDIATION (Wiz AI-SDLC)',
+        acceptableUsePolicy: '[Acceptable Use & Anti-Abuse Policy] This tool is strictly designed for authorized defensive security audits on systems you own or have explicit written permission to test. Unauthorized scanning, malicious reconnaissance, or disruptive exploitation are strictly prohibited. The runner assumes full legal responsibility.',
         tributeStatement: '[Independent Project & Trademark Disclaimer] This is an independent open-source community project. Its interface pays tribute to the terminal minimalism and developer UX of Google Antigravity CLI (agy). This project is not an official product and is not affiliated with, sponsored by, or endorsed by Google LLC. Google and Antigravity are trademarks of Google LLC. All code maintenance, Cloudflare edge deployment, and operational responsibilities are solely undertaken and answered for by the author & maintainers (tw365-org).',
+        wizAttribution: '[Security Architecture Attribution] The layered defense, remediation-first design, and zero-data-exposure architecture of this project reference and adhere to Wiz\'s framework "Security for AI-Driven Development" (Source: Wiz Research, wiz.io). We gratefully acknowledge and credit Wiz.',
+        antiClaudeStatement: '[Aesthetic Manifesto: Zero Warm-Beige Fluff] This interface strictly repudiates warm beige backgrounds, sunset terracotta tones, and cozy chatbot tropes (aka the "Claude café aesthetic"). This is an uncompromising developer terminal: obsidian black, ANSI exit codes, and zero conversational fluff. We diagnose vulnerabilities, we don\'t serve lattes. (Note: "Claude" is a trademark of Anthropic, PBC; referenced here solely as satirical stylistic commentary with zero affiliation).',
       }
     };
 
@@ -803,6 +838,17 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
             <div class="text-xs text-zinc-500 uppercase font-semibold">\${dict.diagReasonLabel}</div>
             <p class="text-zinc-200 leading-relaxed text-xs sm:text-sm">\${escapeHtml(data.reason)}</p>
           </div>
+
+          <!-- Actionable Remediation Box (Wiz AI-SDLC Criterion 3: Fix Quality) -->
+          \${data.remediation ? \`
+            <div class="bg-obsidian-950 p-3.5 rounded border border-rose-900/60 space-y-1.5">
+              <div class="text-xs text-ansi-red uppercase font-bold flex items-center gap-1.5">
+                <span>🛠️</span>
+                <span>\${dict.remediationTitle}</span>
+              </div>
+              <pre class="text-xs text-zinc-200 font-mono whitespace-pre-wrap bg-obsidian-900 p-2.5 rounded border border-obsidian-800 leading-relaxed">\${escapeHtml(data.remediation)}</pre>
+            </div>
+          \` : ''}
 
           <!-- Headers Accordion -->
           \${data.headers_summary ? \`

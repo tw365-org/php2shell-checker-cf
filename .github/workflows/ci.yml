@@ -1,0 +1,34 @@
+name: Wiz AI-SDLC Security & Quality Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  gate:
+    name: First Gate (Commit & Push Verification)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🛡️ [Wiz Stage 1/2] Supply Chain Vulnerability Scan (npm audit)
+        run: npm audit --audit-level=high
+
+      - name: 🔍 [Wiz Code Quality] TypeScript Static Analysis & Type Checking
+        run: npx tsc --noEmit
+
+      - name: 🧪 [Wiz Regression & SSRF Defense] Run Unit Tests & Security Suite
+        run: npm test

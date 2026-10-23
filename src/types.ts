@@ -6,6 +6,7 @@ export interface CheckResult {
   patch_status: PatchStatus
   php_version: string | null
   reason: string
+  remediation?: string
   exit_code: number
   headers_summary?: string
   checked_at?: string
