@@ -130,7 +130,13 @@ node phpcheck.js "https://example.com" --json
 
 ---
 
-## 📜 授權協議 (License)
+## 📜 授權協議、商標規範與負責聲明 (Legal, Trademark & Responsibility)
 
-本專案承襲上游採用 [Apache License 2.0](LICENSE) 開源授權。
-原創基礎由 OpenAI 維護；Cloudflare Workers 邊緣化與前後台擴充由 [tw365-org](https://github.com/tw365-org) 開發。
+- **開源授權協議**：本專案依據 [Apache License 2.0](LICENSE) 條款開放原始碼。
+- **原創核心**：PHP2Shell 官方版本比對規則基礎由 OpenAI 維護。
+- **邊緣化與前後台擴充**：Cloudflare Workers + D1 邊緣化、多語系支援與前後台由 [tw365-org](https://github.com/tw365-org) 獨立開發維護。
+- **商標規範與非官方聲明 (Compliance with [antigravity.google/press](https://antigravity.google/press))**：
+  - 本專案純屬獨立社群開源成果，介面設計由衷致敬 Google Antigravity CLI (`agy`) 之終端極簡美學與開發者體驗。
+  - **本專案非 Google 官方產品，亦未獲 Google LLC 授權、贊助或背書**。
+  - 「Google」與「Antigravity」均為 Google LLC 之商標。
+  - 本專案之原始碼維護、雲端邊緣部署以及一切衍生之營運責任，均由作者與維護團隊（tw365-org）全權承擔與負責。

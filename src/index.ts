@@ -40,6 +40,7 @@ app.get('/health', (c) => {
 app.post('/api/check', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const timeout = Number(body.timeout) || 10
+  const lang = (body.lang === 'en' ? 'en' : 'zh') as 'zh' | 'en'
 
   // Batch Mode
   if (Array.isArray(body.urls)) {
@@ -47,7 +48,7 @@ app.post('/api/check', async (c) => {
     const results: CheckResult[] = []
 
     for (const raw of urls) {
-      const res = await checkUrl(raw, timeout)
+      const res = await checkUrl(raw, timeout, lang)
       const id = generateId()
       res.id = id
       results.push(res)
@@ -87,7 +88,7 @@ app.post('/api/check', async (c) => {
     return c.json({ error: 'Please provide a valid url' }, 400)
   }
 
-  const result = await checkUrl(rawUrl, timeout)
+  const result = await checkUrl(rawUrl, timeout, lang)
   const id = generateId()
   result.id = id
 

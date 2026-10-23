@@ -86,7 +86,7 @@ export function versionStatus(version: string | null): PatchStatus {
   return 'ok'
 }
 
-export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<CheckResult> {
+export async function checkUrl(rawAddress: string, timeoutSec = 10, lang: 'zh' | 'en' = 'zh'): Promise<CheckResult> {
   const address = rawAddress.trim()
   let url: URL
   try {
@@ -101,7 +101,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
       target_host: 'invalid',
       patch_status: 'unknown',
       php_version: null,
-      reason: 'Invalid URL format',
+      reason: lang === 'en' ? 'Invalid URL format' : '網址格式不正確，請輸入合法的 HTTP 或 HTTPS 網址',
       exit_code: 2,
     }
   }
@@ -112,7 +112,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
       target_host: url.hostname,
       patch_status: 'unknown',
       php_version: null,
-      reason: 'Use an http:// or https:// URL',
+      reason: lang === 'en' ? 'Use an http:// or https:// URL' : '僅支援 http:// 或 https:// 網址',
       exit_code: 2,
     }
   }
@@ -123,7 +123,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
       target_host: url.hostname,
       patch_status: 'unknown',
       php_version: null,
-      reason: 'URL credentials and fragments are not supported',
+      reason: lang === 'en' ? 'URL credentials and fragments are not supported' : '不支援帶有帳密憑證或錨點 (#) 的網址',
       exit_code: 2,
     }
   }
@@ -135,7 +135,9 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
       target_host: url.hostname,
       patch_status: 'unknown',
       php_version: null,
-      reason: `Blocked by SSRF security policy: private or loopback host (${url.hostname}) is prohibited`,
+      reason: lang === 'en'
+        ? `Blocked by SSRF security policy: private or loopback host (${url.hostname}) is prohibited`
+        : `SSRF 安全防護阻擋：禁止探測本機回環或內網私有 IP (${url.hostname})`,
       exit_code: 2,
     }
   }
@@ -159,7 +161,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
       if (serverHeader) headersGathered.push(`Server: ${serverHeader}`)
       if (poweredByHeader) headersGathered.push(`X-Powered-By: ${poweredByHeader}`)
 
-      // Don't read the response body to avoid loading unnecessary bytes
+      // Don't read response body
       if (response.body) {
         try {
           await response.body.cancel()
@@ -173,7 +175,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
         break
       }
     } catch (err: any) {
-      errorMsg = err.message || 'Connection failed or timeout'
+      errorMsg = err.message || (lang === 'en' ? 'Connection failed or timeout' : '連線失敗或逾時')
       break
     }
   }
@@ -193,13 +195,20 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
     if (finalStatus === 'potentially_vulnerable') break
   }
 
-  let reason = errorMsg || 'PHP version not found in HTTP headers'
+  let reason = errorMsg || (lang === 'en' ? 'PHP version not found in HTTP headers' : '未在伺服器回應標頭中發現 PHP 版本標記（可能已關閉標頭曝光）')
   if (detectedVersion && !errorMsg) {
-    reason =
-      finalStatus === 'ok'
-        ? `PHP ${detectedVersion}: advertised version meets an upstream fixed release. Installed build not verified.`
-        : `PHP ${detectedVersion}: ${finalStatus === 'potentially_vulnerable' ? 'Potentially vulnerable. ' : ''}` +
-          'HTTP headers cannot tell whether this version contains a backported fix.'
+    if (lang === 'en') {
+      reason =
+        finalStatus === 'ok'
+          ? `PHP ${detectedVersion}: advertised version meets an upstream fixed release. Installed build not verified.`
+          : `PHP ${detectedVersion}: ${finalStatus === 'potentially_vulnerable' ? 'Potentially vulnerable. ' : ''}` +
+            'HTTP headers cannot tell whether this version contains a backported fix.'
+    } else {
+      reason =
+        finalStatus === 'ok'
+          ? `PHP ${detectedVersion}：伺服器宣告之版本符合官方修復標準（8.2.35、8.3.36、8.4.27、8.5.12 以上）。注意：HTTP 標頭無法驗證底層安裝檔是否遭竄改。`
+          : `PHP ${detectedVersion}：【潛在受威脅】此版本低於官方修復基準或為已終止支援之舊分支。注意：HTTP 標頭無法確認 Linux 發行版是否已套用 backport 修補。`
+    }
   }
 
   const exitCodeMap: Record<PatchStatus, number> = {
@@ -215,7 +224,7 @@ export async function checkUrl(rawAddress: string, timeoutSec = 10): Promise<Che
     php_version: detectedVersion,
     reason,
     exit_code: exitCodeMap[finalStatus] ?? 3,
-    headers_summary: rawHeadersText || 'None detected',
+    headers_summary: rawHeadersText || (lang === 'en' ? 'None detected' : '未偵測到標頭'),
     checked_at: new Date().toISOString(),
   }
 }
