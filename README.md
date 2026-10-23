@@ -57,7 +57,32 @@
 
 ---
 
-| 狀態 | 標識 | 意義與說明 |
+## 🎨 多元復古系統主題引擎 (Retro Themes Engine)
+
+本系統內建六大經典開發者系統主題，支援鍵盤快捷鍵「**`T`**」快速輪播，並可直接透過 URL 參數（如 `?theme=vt100`、`?theme=win95`）指定風格。每次切換時，頁籤的向量 SVG Favicon (`❯_`) 會自動同步變換顏色，並帶有專屬細節質感：
+
+| 主題代碼 | 主題名稱 | 視覺特徵與專屬質感 | 快速預覽參數 |
+| :--- | :--- | :--- | :--- |
+| `obsidian` *(預設)* | ⬛ **黑曜石 agy** | 深黑曜石底色、ANSI 翡翠綠 (`#10b981`)、Google Antigravity 極簡風格 | `/?theme=obsidian` |
+| `vt100` | 🟢 **VT100 綠螢幕** | 純黑底色、高亮磷光綠字體、微弱 CRT 水平掃描線與文字微光暈 | `/?theme=vt100` |
+| `amber` | 🟡 **復古琥珀 CRT** | 70/80 年代溫潤暖琥珀/橙黃磷光管管色，無眩光高對比 | `/?theme=amber` |
+| `dracula` | 🟣 **Dracula 吸血鬼** | 經典深紫底 (`#282a36`)、粉紅/青綠/淡紫高對比程式碼高亮質感 | `/?theme=dracula` |
+| `solarized` | 🔵 **Solarized Dark** | Ethan Schoonover 專利深青底色 (`#002b36`) 與科學化低疲勞調色 | `/?theme=solarized` |
+| `win95` | 🪟 **Windows 95 經典** | 經典藍綠桌面 (`#008080`)、灰色對話框、深藍視窗頂欄與 3D 浮雕倒角邊框 | `/?theme=win95` |
+
+### 📸 主題實機展示截圖 (Theme Showcase Gallery)
+
+| 🟢 VT100 綠螢幕 (CRT 掃描線) | 🟡 復古琥珀 CRT (Amber Phosphor) |
+| :---: | :---: |
+| ![theme-vt100](docs/screenshots/theme-vt100.png) | ![theme-amber](docs/screenshots/theme-amber.png) |
+
+| 🪟 Windows 95 經典系統 (3D 浮雕) | 🟣 Dracula 吸血鬼深紫 (High-Contrast) |
+| :---: | :---: |
+| ![theme-win95](docs/screenshots/theme-win95.png) | ![theme-dracula](docs/screenshots/theme-dracula.png) |
+
+---
+
+## 📊 判定標準 (Classification Rules)
 | :--- | :--- | :--- |
 | `OK` | ✅ 安全/已修復 | 宣稱之版本達到或高於官方修復釋出（8.2.35、8.3.36、8.4.27、8.5.12）。 |
 | `POTENTIALLY VULNERABLE` | ⚠️ 潛在受威脅 | 宣稱之版號低於上述修復版，或為已 EOL 之舊分支 (5.4–5.6, 7.0–7.4, 8.0, 8.1)。 |

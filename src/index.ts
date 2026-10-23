@@ -341,12 +341,16 @@ app.post('/api/admin/settings', requireAdmin, async (c) => {
   const body = await c.req.json().catch(() => ({}))
   if (!c.env.DB) return c.json({ error: 'DB not available' }, 500)
 
-  for (const [k, v] of Object.entries(body)) {
-    await c.env.DB.prepare(`
-      INSERT INTO settings (key, value, updated_at)
-      VALUES (?, ?, CURRENT_TIMESTAMP)
-      ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = CURRENT_TIMESTAMP
-    `).bind(k, String(v)).run()
+  const entries = Object.entries(body)
+  if (entries.length > 0) {
+    const statements = entries.map(([k, v]) =>
+      c.env.DB.prepare(`
+        INSERT INTO settings (key, value, updated_at)
+        VALUES (?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = CURRENT_TIMESTAMP
+      `).bind(k, String(v))
+    )
+    await c.env.DB.batch(statements)
   }
 
   return c.json({ success: true })

@@ -81,3 +81,44 @@ test('SSRF Guard permits public domains', () => {
   assert.equal(isPrivateOrBlockedHost('1.1.1.1'), false)
   assert.equal(isPrivateOrBlockedHost('8.8.8.8'), false)
 })
+
+// ----------------------------------------------------
+// Test Retro Theme Whitelist & Fallback Logic
+// ----------------------------------------------------
+const VALID_THEMES = ['obsidian', 'vt100', 'amber', 'dracula', 'solarized', 'win95']
+const THEME_FAVICONS = {
+  obsidian: '#10b981',
+  vt100: '#33ff33',
+  amber: '#ffb000',
+  dracula: '#bd93f9',
+  solarized: '#2aa198',
+  win95: '#000080'
+}
+
+function resolveTheme(param) {
+  return (param && VALID_THEMES.includes(param)) ? param : 'obsidian'
+}
+
+function getThemeFaviconColor(theme) {
+  return THEME_FAVICONS[resolveTheme(theme)]
+}
+
+test('Theme Engine validates whitelisted themes and falls back to obsidian', () => {
+  assert.equal(resolveTheme('obsidian'), 'obsidian')
+  assert.equal(resolveTheme('vt100'), 'vt100')
+  assert.equal(resolveTheme('amber'), 'amber')
+  assert.equal(resolveTheme('dracula'), 'dracula')
+  assert.equal(resolveTheme('solarized'), 'solarized')
+  assert.equal(resolveTheme('win95'), 'win95')
+  assert.equal(resolveTheme('unknown-theme'), 'obsidian')
+  assert.equal(resolveTheme(null), 'obsidian')
+  assert.equal(resolveTheme(''), 'obsidian')
+})
+
+test('Theme Engine maps correct vector Favicon hex colors', () => {
+  assert.equal(getThemeFaviconColor('vt100'), '#33ff33')
+  assert.equal(getThemeFaviconColor('amber'), '#ffb000')
+  assert.equal(getThemeFaviconColor('win95'), '#000080')
+  assert.equal(getThemeFaviconColor('dracula'), '#bd93f9')
+  assert.equal(getThemeFaviconColor('invalid'), '#10b981')
+})

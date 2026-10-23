@@ -338,12 +338,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         <div class="flex items-center bg-obsidian-950 border border-obsidian-750 rounded text-xs">
           <span class="pl-2 pr-1 text-zinc-400">🎨</span>
           <select id="theme-selector" onchange="setTheme(this.value)" class="bg-transparent text-zinc-200 text-xs py-1 pr-1 outline-none cursor-pointer font-semibold border-0">
-            <option value="obsidian" class="bg-obsidian-900 text-zinc-200" data-i18n="themeObsidian">黑曜石 agy</option>
-            <option value="vt100" class="bg-obsidian-900 text-zinc-200" data-i18n="themeVt100">VT100 綠螢幕</option>
-            <option value="amber" class="bg-obsidian-900 text-zinc-200" data-i18n="themeAmber">復古琥珀 CRT</option>
-            <option value="dracula" class="bg-obsidian-900 text-zinc-200" data-i18n="themeDracula">Dracula 吸血鬼</option>
-            <option value="solarized" class="bg-obsidian-900 text-zinc-200" data-i18n="themeSolarized">Solarized 太陽黑</option>
-            <option value="win95" class="bg-obsidian-900 text-zinc-200" data-i18n="themeWin95">Win 95 經典</option>
+            <option value="obsidian" class="bg-obsidian-900 text-zinc-200" data-i18n="themeObsidian">⬛ 黑曜石 agy</option>
+            <option value="vt100" class="bg-obsidian-900 text-zinc-200" data-i18n="themeVt100">🟢 VT100 綠螢幕</option>
+            <option value="amber" class="bg-obsidian-900 text-zinc-200" data-i18n="themeAmber">🟡 復古琥珀 CRT</option>
+            <option value="dracula" class="bg-obsidian-900 text-zinc-200" data-i18n="themeDracula">🟣 Dracula 吸血鬼</option>
+            <option value="solarized" class="bg-obsidian-900 text-zinc-200" data-i18n="themeSolarized">🔵 Solarized 太陽黑</option>
+            <option value="win95" class="bg-obsidian-900 text-zinc-200" data-i18n="themeWin95">🪟 Win 95 經典</option>
           </select>
           <button onclick="cycleTheme()" title="切換下一個主題 (按鍵盤 T)" class="px-2 py-1 text-zinc-400 hover:text-ansi-green hover:bg-obsidian-850 rounded-r border-l border-obsidian-750 font-mono text-[11px] font-bold">
             [T]
@@ -862,12 +862,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         statusOk: '[安全: 0] 達到官方安全版本',
         statusVulnTag: '[受威脅: 1] 潛在暴露弱點',
         statusUnknownTag: '[未知: 3] 未知或無標頭',
-        themeObsidian: '黑曜石 agy',
-        themeVt100: 'VT100 綠螢幕',
-        themeAmber: '復古琥珀 CRT',
-        themeDracula: 'Dracula 吸血鬼',
-        themeSolarized: 'Solarized 太陽黑',
-        themeWin95: 'Win 95 經典',
+        themeObsidian: '⬛ 黑曜石 agy',
+        themeVt100: '🟢 VT100 綠螢幕',
+        themeAmber: '🟡 復古琥珀 CRT',
+        themeDracula: '🟣 Dracula 吸血鬼',
+        themeSolarized: '🔵 Solarized 太陽黑',
+        themeWin95: '🪟 Win 95 經典',
         targetLabel: '檢測目標網址',
         detectedPhpLabel: '偵測到的 PHP 版本',
         exitCodeLabel: '退出狀態碼',
@@ -941,12 +941,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         statusOk: '[OK: 0] UPSTREAM_FIXED',
         statusVulnTag: '[VULN: 1] POTENTIALLY_EXPOSED',
         statusUnknownTag: '[UNKNOWN: 3] NOT_ADVERTISED',
-        themeObsidian: 'Obsidian agy',
-        themeVt100: 'VT100 Phosphor',
-        themeAmber: 'Amber CRT',
-        themeDracula: 'Dracula Purple',
-        themeSolarized: 'Solarized Dark',
-        themeWin95: 'Classic Win95',
+        themeObsidian: '⬛ Obsidian agy',
+        themeVt100: '🟢 VT100 Phosphor',
+        themeAmber: '🟡 Amber CRT',
+        themeDracula: '🟣 Dracula Purple',
+        themeSolarized: '🔵 Solarized Dark',
+        themeWin95: '🪟 Classic Win95',
         targetLabel: 'DIAGNOSTIC TARGET',
         detectedPhpLabel: 'DETECTED PHP',
         exitCodeLabel: 'EXIT CODE',
