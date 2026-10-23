@@ -23,7 +23,15 @@ function generateId(): string {
 // Frontend Web App
 // ----------------------------------------------------
 app.get('/', (c) => {
-  return c.html(renderAppHtml(c.env.APP_NAME || 'PHP2Shell Security Checker'))
+  return c.html(renderAppHtml(c.env.APP_NAME || 'PHP2Shell Security Checker', 'front'))
+})
+
+app.get('/batch', (c) => {
+  return c.html(renderAppHtml(c.env.APP_NAME || 'PHP2Shell Security Checker', 'batch'))
+})
+
+app.get('/admin-demo', (c) => {
+  return c.html(renderAppHtml(c.env.APP_NAME || 'PHP2Shell Security Checker', 'admin'))
 })
 
 app.get('/health', (c) => {
@@ -129,7 +137,15 @@ app.get('/api/report/:id', async (c) => {
   if (!row) {
     return c.json({ error: 'Report not found' }, 404)
   }
-  return c.json(row)
+
+  const lang = c.req.query('lang') === 'en' ? 'en' : 'zh'
+  const report = { ...row } as any
+  if (report.patch_status === 'potentially_vulnerable' && !report.remediation) {
+    report.remediation = lang === 'en'
+      ? 'Remediation Recommendations:\n1. Upstream PHP: Upgrade to 8.2.35, 8.3.36, 8.4.27, or 8.5.12.\n2. Debian / Ubuntu: sudo apt-get update && sudo apt-get --only-upgrade install php*-fpm (or libapache2-mod-php*)\n3. RHEL / Rocky: sudo dnf upgrade php*'
+      : '即用型修復建議：\n1. 官方版本：立即升級至 PHP 8.2.35、8.3.36、8.4.27 或 8.5.12 以上。\n2. Debian / Ubuntu：執行 sudo apt-get update && sudo apt-get --only-upgrade install php*-fpm (或 libapache2-mod-php*)\n3. RHEL / Rocky / AlmaLinux：執行 sudo dnf upgrade php*'
+  }
+  return c.json(report)
 })
 
 // ----------------------------------------------------

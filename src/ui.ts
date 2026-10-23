@@ -6,7 +6,25 @@
 
 export const FAVICON_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0b0e'/%3E%3Ctext x='4' y='22' font-family='monospace' font-weight='900' font-size='18' fill='%2310b981'%3E%E2%9D%AF_%3C/text%3E%3C/svg%3E`
 
-export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
+export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'front' | 'batch' | 'admin' = 'front'): string {
+  const isFront = initialTab === 'front';
+  const isBatch = initialTab === 'batch';
+  const isAdmin = initialTab === 'admin';
+
+  const navFrontCls = isFront
+    ? "px-2.5 py-1.5 rounded bg-obsidian-800 text-ansi-green border border-obsidian-700 font-bold transition"
+    : "px-2.5 py-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition";
+  const navBatchCls = isBatch
+    ? "px-2.5 py-1.5 rounded bg-obsidian-800 text-ansi-green border border-obsidian-700 font-bold transition"
+    : "px-2.5 py-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition";
+  const navAdminCls = isAdmin
+    ? "px-2.5 py-1.5 rounded bg-obsidian-800 text-ansi-green border border-obsidian-700 font-bold transition"
+    : "px-2.5 py-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition";
+
+  const viewFrontCls = isFront ? "space-y-6 max-w-4xl mx-auto" : "hidden space-y-6 max-w-4xl mx-auto";
+  const viewBatchCls = isBatch ? "space-y-6 max-w-4xl mx-auto" : "hidden space-y-6 max-w-4xl mx-auto";
+  const viewAdminCls = isAdmin ? "space-y-6 max-w-5xl mx-auto" : "hidden space-y-6 max-w-5xl mx-auto";
+
   return `<!DOCTYPE html>
 <html lang="zh-TW" class="dark" style="font-size: 100%;">
 <head>
@@ -107,13 +125,13 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         
         <!-- Navigation as CLI Subcommands -->
         <nav class="flex items-center space-x-1 sm:space-x-2 text-xs">
-          <button id="nav-btn-front" onclick="switchTab('front')" class="px-2.5 py-1.5 rounded bg-obsidian-800 text-ansi-green border border-obsidian-700 font-semibold transition">
+          <button id="nav-btn-front" onclick="switchTab('front')" class="${navFrontCls}">
             <span data-i18n="navCheck">[1] 網址檢測</span>
           </button>
-          <button id="nav-btn-batch" onclick="switchTab('batch')" class="px-2.5 py-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition">
+          <button id="nav-btn-batch" onclick="switchTab('batch')" class="${navBatchCls}">
             <span data-i18n="navBatch">[2] 批次掃描</span>
           </button>
-          <button id="nav-btn-admin" onclick="switchTab('admin')" class="px-2.5 py-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-obsidian-850 transition">
+          <button id="nav-btn-admin" onclick="switchTab('admin')" class="${navAdminCls}">
             <span data-i18n="navAdmin">[3] 後台管理</span>
           </button>
         </nav>
@@ -149,7 +167,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     <!-- ============================================== -->
     <!-- VIEW 1: SINGLE CHECK (agy check) -->
     <!-- ============================================== -->
-    <div id="view-front" class="space-y-6 max-w-4xl mx-auto">
+    <div id="view-front" class="${viewFrontCls}">
       
       <!-- Terminal Header Banner -->
       <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-4 sm:p-5 text-xs text-zinc-400 space-y-2">
@@ -210,7 +228,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     <!-- ============================================== -->
     <!-- VIEW 2: BATCH SCAN (agy batch) -->
     <!-- ============================================== -->
-    <div id="view-batch" class="hidden space-y-6 max-w-4xl mx-auto">
+    <div id="view-batch" class="${viewBatchCls}">
       <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-4 text-xs space-y-1">
         <div class="flex items-center gap-2 text-zinc-200 font-bold">
           <span class="text-ansi-cyan">⚡</span>
@@ -222,10 +240,10 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       <div class="bg-obsidian-900 border border-obsidian-800 rounded-lg p-4 space-y-3">
         <div class="text-xs text-zinc-400 flex items-center justify-between">
           <span><span class="text-ansi-green font-bold">❯</span> agy batch --stdin</span>
-          <span id="batch-count" class="text-zinc-400 text-xs font-semibold">0 個目標排入隊列</span>
+          <span id="batch-count" class="text-zinc-400 text-xs font-semibold">${isBatch ? '4 個目標排入隊列' : '0 個目標排入隊列'}</span>
         </div>
         <textarea id="batch-urls" rows="6" placeholder="https://domain-alpha.com&#10;https://domain-bravo.org&#10;https://example.net"
-          class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-3 text-xs sm:text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-ansi-cyan font-mono leading-relaxed"></textarea>
+          class="w-full bg-obsidian-950 border border-obsidian-700 rounded p-3 text-xs sm:text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-ansi-cyan font-mono leading-relaxed">${isBatch ? 'https://legacy-crm.internal.corp&#10;https://portal.marketing.org&#10;https://api.gateway.net&#10;https://dev-stage.service.io' : ''}</textarea>
         
         <div class="flex items-center justify-between flex-wrap gap-2">
           <span class="text-xs text-zinc-500" data-i18n="ssrfNotice">SSRF 安全過濾機制已全域啟動（嚴禁掃描內網私有 IP）</span>
@@ -237,10 +255,16 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       </div>
 
       <!-- Batch Result Table -->
-      <div id="batch-results-container" class="hidden space-y-3">
+      <div id="batch-results-container" class="${isBatch ? 'space-y-3' : 'hidden space-y-3'}">
         <div class="flex items-center justify-between border-b border-obsidian-800 pb-2 text-xs">
           <span class="text-zinc-200 font-bold uppercase" data-i18n="batchResultStream">批次檢測結果清單</span>
-          <div id="batch-summary-chips" class="text-xs space-x-2"></div>
+          <div id="batch-summary-chips" class="text-xs space-x-2">
+            ${isBatch ? `
+              <span class="text-ansi-red font-bold">[受威脅: 1]</span>
+              <span class="text-ansi-green font-bold">[安全: 2]</span>
+              <span class="text-ansi-amber font-bold">[未知: 1]</span>
+            ` : ''}
+          </div>
         </div>
 
         <div class="border border-obsidian-800 rounded bg-obsidian-900 overflow-x-auto">
@@ -255,6 +279,36 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
               </tr>
             </thead>
             <tbody id="batch-table-body" class="divide-y divide-obsidian-800 text-xs">
+              ${isBatch ? `
+                <tr class="hover:bg-obsidian-850">
+                  <td class="p-2.5 text-white truncate max-w-xs font-mono">https://legacy-crm.internal.corp</td>
+                  <td class="p-2.5"><span class="text-ansi-red font-bold">[VULN]</span></td>
+                  <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.2.14</td>
+                  <td class="p-2.5 text-zinc-400">1</td>
+                  <td class="p-2.5 text-zinc-300 truncate max-w-sm">檢測到受影響的 PHP 8.2.14 版本（存在 RCE 漏洞風險，建議立即升級至 8.2.35+）</td>
+                </tr>
+                <tr class="hover:bg-obsidian-850">
+                  <td class="p-2.5 text-white truncate max-w-xs font-mono">https://portal.marketing.org</td>
+                  <td class="p-2.5"><span class="text-ansi-green font-bold">[OK]</span></td>
+                  <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.3.36</td>
+                  <td class="p-2.5 text-zinc-400">0</td>
+                  <td class="p-2.5 text-zinc-300 truncate max-w-sm">檢測到已修復之 PHP 8.3.36 版本（符合安全基準）</td>
+                </tr>
+                <tr class="hover:bg-obsidian-850">
+                  <td class="p-2.5 text-white truncate max-w-xs font-mono">https://api.gateway.net</td>
+                  <td class="p-2.5"><span class="text-ansi-green font-bold">[OK]</span></td>
+                  <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.4.27</td>
+                  <td class="p-2.5 text-zinc-400">0</td>
+                  <td class="p-2.5 text-zinc-300 truncate max-w-sm">檢測到已修復之 PHP 8.4.27 版本（符合安全基準）</td>
+                </tr>
+                <tr class="hover:bg-obsidian-850">
+                  <td class="p-2.5 text-white truncate max-w-xs font-mono">https://dev-stage.service.io</td>
+                  <td class="p-2.5"><span class="text-ansi-amber font-bold">[UNKNOWN]</span></td>
+                  <td class="p-2.5 text-zinc-500 font-mono">-</td>
+                  <td class="p-2.5 text-zinc-400">3</td>
+                  <td class="p-2.5 text-zinc-300 truncate max-w-sm">伺服器未於 HTTP 標頭公開 PHP 版本資訊</td>
+                </tr>
+              ` : ''}
             </tbody>
           </table>
         </div>
@@ -264,10 +318,10 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
     <!-- ============================================== -->
     <!-- VIEW 3: ADMIN DASHBOARD (agy admin) -->
     <!-- ============================================== -->
-    <div id="view-admin" class="hidden space-y-6 max-w-5xl mx-auto">
+    <div id="view-admin" class="${viewAdminCls}">
       
       <!-- Login Prompt (If not authed) -->
-      <div id="admin-login-box" class="max-w-md mx-auto bg-obsidian-900 border border-obsidian-800 rounded-lg p-6 space-y-4">
+      <div id="admin-login-box" class="${isAdmin ? 'hidden max-w-md mx-auto bg-obsidian-900 border border-obsidian-800 rounded-lg p-6 space-y-4' : 'max-w-md mx-auto bg-obsidian-900 border border-obsidian-800 rounded-lg p-6 space-y-4'}">
         <div class="border-b border-obsidian-800 pb-3">
           <div class="text-sm text-ansi-amber font-bold flex items-center gap-1.5">
             <span>🔒</span>
@@ -295,7 +349,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
       </div>
 
       <!-- Admin Management Console (If authed) -->
-      <div id="admin-panel" class="hidden space-y-6">
+      <div id="admin-panel" class="${isAdmin ? 'space-y-6' : 'hidden space-y-6'}">
         
         <!-- Header & Telemetry Block -->
         <div class="border border-obsidian-800 rounded-lg bg-obsidian-900 p-4 space-y-3">
@@ -319,19 +373,19 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
             <div class="bg-obsidian-950 border border-obsidian-800 rounded p-3">
               <div class="text-xs text-zinc-500 uppercase font-semibold" data-i18n="statTotal">總檢測次數</div>
-              <div id="stat-total" class="text-xl font-bold text-zinc-100 font-mono mt-0.5">0</div>
+              <div id="stat-total" class="text-xl font-bold text-zinc-100 font-mono mt-0.5">${isAdmin ? '1,428' : '0'}</div>
             </div>
             <div class="bg-obsidian-950 border border-obsidian-800 rounded p-3">
               <div class="text-xs text-ansi-red uppercase font-semibold" data-i18n="statVuln">受威脅站點</div>
-              <div id="stat-vuln" class="text-xl font-bold text-ansi-red font-mono mt-0.5">0</div>
+              <div id="stat-vuln" class="text-xl font-bold text-ansi-red font-mono mt-0.5">${isAdmin ? '42' : '0'}</div>
             </div>
             <div class="bg-obsidian-950 border border-obsidian-800 rounded p-3">
               <div class="text-xs text-ansi-green uppercase font-semibold" data-i18n="statSafe">已修復安全</div>
-              <div id="stat-safe" class="text-xl font-bold text-ansi-green font-mono mt-0.5">0</div>
+              <div id="stat-safe" class="text-xl font-bold text-ansi-green font-mono mt-0.5">${isAdmin ? '896' : '0'}</div>
             </div>
             <div class="bg-obsidian-950 border border-obsidian-800 rounded p-3">
               <div class="text-xs text-ansi-cyan uppercase font-semibold" data-i18n="statMonitored">定時巡檢站點</div>
-              <div id="stat-monitored" class="text-xl font-bold text-ansi-cyan font-mono mt-0.5">0</div>
+              <div id="stat-monitored" class="text-xl font-bold text-ansi-cyan font-mono mt-0.5">${isAdmin ? '16' : '0'}</div>
             </div>
           </div>
         </div>
@@ -372,7 +426,40 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
                 </tr>
               </thead>
               <tbody id="admin-scans-tbody" class="divide-y divide-obsidian-800 text-xs">
-                <tr><td colspan="6" class="p-4 text-center text-zinc-500">載入審計日誌中...</td></tr>
+                ${isAdmin ? `
+                  <tr class="hover:bg-obsidian-850">
+                    <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:15:22</td>
+                    <td class="p-2.5 text-white font-mono">https://legacy-crm.internal.corp</td>
+                    <td class="p-2.5"><span class="text-ansi-red font-bold">[VULN]</span></td>
+                    <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.2.14</td>
+                    <td class="p-2.5 text-zinc-300 truncate max-w-sm">檢測到受影響版本，建議立即升級至 8.2.35</td>
+                    <td class="p-2.5"><button class="text-ansi-green hover:underline">[詳情]</button></td>
+                  </tr>
+                  <tr class="hover:bg-obsidian-850">
+                    <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:14:05</td>
+                    <td class="p-2.5 text-white font-mono">https://portal.marketing.org</td>
+                    <td class="p-2.5"><span class="text-ansi-green font-bold">[OK]</span></td>
+                    <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.3.36</td>
+                    <td class="p-2.5 text-zinc-300 truncate max-w-sm">版本已修復至安全基準</td>
+                    <td class="p-2.5"><button class="text-ansi-green hover:underline">[詳情]</button></td>
+                  </tr>
+                  <tr class="hover:bg-obsidian-850">
+                    <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:10:19</td>
+                    <td class="p-2.5 text-white font-mono">https://api.gateway.net</td>
+                    <td class="p-2.5"><span class="text-ansi-green font-bold">[OK]</span></td>
+                    <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.4.27</td>
+                    <td class="p-2.5 text-zinc-300 truncate max-w-sm">版本已修復至安全基準</td>
+                    <td class="p-2.5"><button class="text-ansi-green hover:underline">[詳情]</button></td>
+                  </tr>
+                  <tr class="hover:bg-obsidian-850">
+                    <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:05:41</td>
+                    <td class="p-2.5 text-white font-mono">https://dev-stage.service.io</td>
+                    <td class="p-2.5"><span class="text-ansi-amber font-bold">[UNKNOWN]</span></td>
+                    <td class="p-2.5 text-zinc-500 font-mono">-</td>
+                    <td class="p-2.5 text-zinc-300 truncate max-w-sm">未於 HTTP 回應標頭暴露版本</td>
+                    <td class="p-2.5"><button class="text-ansi-green hover:underline">[詳情]</button></td>
+                  </tr>
+                ` : `<tr><td colspan="6" class="p-4 text-center text-zinc-500">載入審計日誌中...</td></tr>`}
               </tbody>
             </table>
           </div>
@@ -1208,7 +1295,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
         .replace(/'/g, '&#39;');
     }
 
-    // Auto-load report if ?report=<id>
+    // Auto-load report if ?report=<id> or handle demo views
     window.addEventListener('DOMContentLoaded', () => {
       initFontSize();
       setLanguage(currentLang);
@@ -1222,6 +1309,75 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker'): string {
             if (report) renderScanResult(report);
           })
           .catch(console.error);
+      }
+
+      const tabParam = params.get('tab');
+      if (tabParam) {
+        switchTab(tabParam);
+      }
+
+      if (params.get('demo') === 'batch') {
+        switchTab('batch');
+        const demoUrls = "https://legacy-crm.internal.corp\nhttps://portal.marketing.org\nhttps://api.gateway.net\nhttps://dev-stage.service.io";
+        const textarea = document.getElementById('batch-urls');
+        if (textarea) textarea.value = demoUrls;
+        renderBatchResults([
+          { url: 'https://legacy-crm.internal.corp', patch_status: 'potentially_vulnerable', php_version: '8.2.14', exit_code: 1, reason: currentLang === 'zh' ? '檢測到受影響的 PHP 8.2.14 版本（存在 RCE 漏洞風險，建議立即升級至 8.2.35+）' : 'Potentially vulnerable PHP 8.2.14 detected.' },
+          { url: 'https://portal.marketing.org', patch_status: 'ok', php_version: '8.3.36', exit_code: 0, reason: currentLang === 'zh' ? '檢測到已修復之 PHP 8.3.36 版本（符合安全基準）' : 'PHP 8.3.36 is patched.' },
+          { url: 'https://api.gateway.net', patch_status: 'ok', php_version: '8.4.27', exit_code: 0, reason: currentLang === 'zh' ? '檢測到已修復之 PHP 8.4.27 版本（符合安全基準）' : 'PHP 8.4.27 is patched.' },
+          { url: 'https://dev-stage.service.io', patch_status: 'unknown', php_version: null, exit_code: 3, reason: currentLang === 'zh' ? '伺服器未於 HTTP 標頭公開 PHP 版本資訊' : 'PHP version not advertised in HTTP headers.' }
+        ]);
+      }
+
+      if (params.get('demo') === 'admin') {
+        switchTab('admin');
+        showAdminPanel();
+        const statTotal = document.getElementById('stat-total-scans');
+        if (statTotal) statTotal.innerText = '1,428';
+        const statVuln = document.getElementById('stat-vuln-detected');
+        if (statVuln) statVuln.innerText = '42';
+        const statSafe = document.getElementById('stat-safe-patched');
+        if (statSafe) statSafe.innerText = '896';
+        const statMon = document.getElementById('stat-monitors-count');
+        if (statMon) statMon.innerText = '16';
+
+        const tbody = document.getElementById('admin-scans-tbody');
+        if (tbody) {
+          tbody.innerHTML = \`
+            <tr class="hover:bg-obsidian-850">
+              <td class="p-2.5 text-white font-mono">https://legacy-crm.internal.corp</td>
+              <td class="p-2.5"><span class="text-ansi-red font-bold">[VULN]</span></td>
+              <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.2.14</td>
+              <td class="p-2.5 text-zinc-400">1</td>
+              <td class="p-2.5 text-zinc-300 truncate max-w-sm">檢測到受影響版本，建議立即升級至 8.2.35</td>
+              <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:15:22</td>
+            </tr>
+            <tr class="hover:bg-obsidian-850">
+              <td class="p-2.5 text-white font-mono">https://portal.marketing.org</td>
+              <td class="p-2.5"><span class="text-ansi-green font-bold">[OK]</span></td>
+              <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.3.36</td>
+              <td class="p-2.5 text-zinc-400">0</td>
+              <td class="p-2.5 text-zinc-300 truncate max-w-sm">版本已修復至安全基準</td>
+              <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:14:05</td>
+            </tr>
+            <tr class="hover:bg-obsidian-850">
+              <td class="p-2.5 text-white font-mono">https://api.gateway.net</td>
+              <td class="p-2.5"><span class="text-ansi-green font-bold">[OK]</span></td>
+              <td class="p-2.5 text-ansi-cyan font-bold font-mono">8.4.27</td>
+              <td class="p-2.5 text-zinc-400">0</td>
+              <td class="p-2.5 text-zinc-300 truncate max-w-sm">版本已修復至安全基準</td>
+              <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:10:19</td>
+            </tr>
+            <tr class="hover:bg-obsidian-850">
+              <td class="p-2.5 text-white font-mono">https://dev-stage.service.io</td>
+              <td class="p-2.5"><span class="text-ansi-amber font-bold">[UNKNOWN]</span></td>
+              <td class="p-2.5 text-zinc-500 font-mono">-</td>
+              <td class="p-2.5 text-zinc-400">3</td>
+              <td class="p-2.5 text-zinc-300 truncate max-w-sm">未於 HTTP 回應標頭暴露版本</td>
+              <td class="p-2.5 text-zinc-500 font-mono text-[11px]">2026-10-23 07:05:41</td>
+            </tr>
+          \`;
+        }
       }
     });
 

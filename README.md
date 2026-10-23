@@ -35,7 +35,27 @@
 
 ---
 
-## 📊 判定標準 (Classification Rules)
+## 📸 系統執行畫面 (Screenshots)
+
+本專案全介面採極客黑曜石終端風格 (Obsidian TUI)，原生支援正體中文與高對比顯示：
+
+### 1. 單一網站即時檢測 (Single Check)
+> 支援快速範例、鍵盤快捷鍵（`[/]` 聚焦、`[+]` `[-]` 等比縮放字體）與全球邊緣節點連線。
+![01-front-scan](docs/screenshots/01-front-scan.png)
+
+### 2. 弱點診斷與即用型修復指引 (Actionable Remediation - Wiz AI-SDLC)
+> 當檢測到受 CVE-2026-109618/109619 威脅之版號時，即時提供官方與 Linux 發行版（Debian / Ubuntu / RHEL）一鍵升級命令，並支援產出獨立報告短鏈。
+![02-vuln-remediation](docs/screenshots/02-vuln-remediation.png)
+
+### 3. 批次多網站並發檢驗 (Concurrent Batch Scan)
+> 支援單次輸入最多 20 個網域名稱，由 Cloudflare 邊緣節點並發發起非同步探針，輸出結構化狀態碼與彩色診斷摘要。
+![03-batch-scan](docs/screenshots/03-batch-scan.png)
+
+### 4. 後台資安審計儀表板與排程監控 (Telemetry & Audit Dashboard)
+> 連線 Cloudflare D1 分散式 SQLite，集中呈現總檢測次數、威脅佔比、定時巡檢目標管理與 Webhook 異常推播設定。
+![04-admin-dashboard](docs/screenshots/04-admin-dashboard.png)
+
+---
 
 | 狀態 | 標識 | 意義與說明 |
 | :--- | :--- | :--- |
