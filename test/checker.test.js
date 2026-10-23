@@ -3,7 +3,7 @@ const { test } = require('node:test')
 
 // Test SSRF blocking rules logic
 function isPrivateOrBlockedHost(hostname) {
-  const host = hostname.toLowerCase().trim()
+  const host = hostname.toLowerCase().trim().replace(/^\[|\]$/g, '')
   if (
     host === 'localhost' ||
     host.endsWith('.localhost') ||
@@ -35,7 +35,14 @@ function isPrivateOrBlockedHost(hostname) {
     if (a === 100 && b >= 64 && b <= 127) return true
   }
 
-  if (host === '::1' || host === '::' || host.startsWith('fc') || host.startsWith('fd') || host.startsWith('fe80')) {
+  if (
+    host === '::1' ||
+    host === '::' ||
+    host.startsWith('::ffff:') ||
+    host.startsWith('fc') ||
+    host.startsWith('fd') ||
+    host.startsWith('fe80')
+  ) {
     return true
   }
 
@@ -62,6 +69,8 @@ test('SSRF Guard blocks private IPv4 loopback and RFC1918 ranges', () => {
 
 test('SSRF Guard blocks IPv6 loopback & link-local', () => {
   assert.equal(isPrivateOrBlockedHost('::1'), true)
+  assert.equal(isPrivateOrBlockedHost('[::1]'), true)
+  assert.equal(isPrivateOrBlockedHost('[::ffff:7f00:1]'), true)
   assert.equal(isPrivateOrBlockedHost('fe80::1'), true)
   assert.equal(isPrivateOrBlockedHost('fc00::1'), true)
 })

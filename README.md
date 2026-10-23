@@ -73,6 +73,7 @@ database_name = "php2shell-db"
 database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 請將 `database_id` 複製並填入專案中的 [`wrangler.jsonc`](wrangler.jsonc)。
+*(提示：若僅在本地端執行 `npm run dev` 進行離線測試，`wrangler.jsonc` 保留預設的 `00000000-0000-0000-0000-000000000000` 佔位符即可啟動本機 D1，無需事先連網建立遠端資料庫。)*
 
 ### 步驟 3：初始化資料庫 Schema
 - **本機測試**：

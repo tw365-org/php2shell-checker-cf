@@ -18,7 +18,8 @@ export const OLDER_BRANCHES = new Set([
  * Validates if a hostname or IP is safe to query (SSRF Defense).
  */
 export function isPrivateOrBlockedHost(hostname: string): boolean {
-  const host = hostname.toLowerCase().trim()
+  // Strip outer IPv6 brackets [::1] => ::1
+  const host = hostname.toLowerCase().trim().replace(/^\[|\]$/g, '')
 
   // Common local domains
   if (
@@ -60,8 +61,15 @@ export function isPrivateOrBlockedHost(hostname: string): boolean {
     if (a === 100 && b >= 64 && b <= 127) return true
   }
 
-  // IPv6 check
-  if (host === '::1' || host === '::' || host.startsWith('fc') || host.startsWith('fd') || host.startsWith('fe80')) {
+  // IPv6 & IPv4-Mapped IPv6 check
+  if (
+    host === '::1' ||
+    host === '::' ||
+    host.startsWith('::ffff:') ||
+    host.startsWith('fc') ||
+    host.startsWith('fd') ||
+    host.startsWith('fe80')
+  ) {
     return true
   }
 

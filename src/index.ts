@@ -42,38 +42,40 @@ app.post('/api/check', async (c) => {
   const timeout = Number(body.timeout) || 10
   const lang = (body.lang === 'en' ? 'en' : 'zh') as 'zh' | 'en'
 
-  // Batch Mode
+  // Batch Mode (Concurrent execution to prevent Edge timeout)
   if (Array.isArray(body.urls)) {
     const urls: string[] = body.urls.slice(0, 20)
-    const results: CheckResult[] = []
+    
+    const results = await Promise.all(
+      urls.map(async (raw) => {
+        const res = await checkUrl(raw, timeout, lang)
+        const id = generateId()
+        res.id = id
 
-    for (const raw of urls) {
-      const res = await checkUrl(raw, timeout, lang)
-      const id = generateId()
-      res.id = id
-      results.push(res)
-
-      // Save to D1 if available
-      if (c.env.DB) {
-        try {
-          await c.env.DB.prepare(`
-            INSERT INTO scans (id, url, target_host, patch_status, php_version, reason, exit_code, headers_summary)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-          `).bind(
-            id,
-            res.url,
-            res.target_host,
-            res.patch_status,
-            res.php_version,
-            res.reason,
-            res.exit_code,
-            res.headers_summary || ''
-          ).run()
-        } catch (dbErr) {
-          console.error('D1 batch insert error:', dbErr)
+        // Save to D1 if available
+        if (c.env.DB) {
+          try {
+            await c.env.DB.prepare(`
+              INSERT INTO scans (id, url, target_host, patch_status, php_version, reason, exit_code, headers_summary)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `).bind(
+              id,
+              res.url,
+              res.target_host,
+              res.patch_status,
+              res.php_version,
+              res.reason,
+              res.exit_code,
+              res.headers_summary || ''
+            ).run()
+          } catch (dbErr) {
+            console.error('D1 batch insert error:', dbErr)
+          }
         }
-      }
-    }
+
+        return res
+      })
+    )
 
     return c.json({
       success: true,
@@ -142,8 +144,13 @@ app.post('/api/admin/login', async (c) => {
   }
 
   const configuredUser = c.env.ADMIN_USERNAME || 'admin'
+  const isDefaultPassword = !c.env.ADMIN_PASSWORD
   const configuredPass = c.env.ADMIN_PASSWORD || 'admin888' // Default fallback admin password
   const jwtSecret = c.env.JWT_SECRET || DEFAULT_JWT_SECRET
+
+  if (isDefaultPassword) {
+    console.warn('[SECURITY WARNING] Running with default fallback ADMIN_PASSWORD ("admin888"). Please configure a strong ADMIN_PASSWORD in your Cloudflare environment variables.')
+  }
 
   let isValid = false
 
@@ -184,6 +191,7 @@ app.post('/api/admin/login', async (c) => {
     success: true,
     token,
     user: { username },
+    is_default_password: isDefaultPassword,
   })
 })
 
@@ -370,47 +378,50 @@ async function handleScheduledEvent(env: Env) {
   const webhookUrl = webhookUrlRow as string
   const webhookEnabled = webhookEnabledRow === '1'
 
-  for (const item of results as any[]) {
-    const res = await checkUrl(item.url)
-    const now = new Date().toISOString()
+  // Run scheduled checks concurrently
+  await Promise.allSettled(
+    (results as any[]).map(async (item) => {
+      const res = await checkUrl(item.url)
+      const now = new Date().toISOString()
 
-    // Update monitored record
-    await env.DB.prepare(`
-      UPDATE monitored_targets
-      SET last_status = ?, last_version = ?, last_checked_at = ?
-      WHERE id = ?
-    `).bind(res.patch_status, res.php_version, now, item.id).run()
+      // Update monitored record
+      await env.DB.prepare(`
+        UPDATE monitored_targets
+        SET last_status = ?, last_version = ?, last_checked_at = ?
+        WHERE id = ?
+      `).bind(res.patch_status, res.php_version, now, item.id).run()
 
-    // Record in scans table
-    await env.DB.prepare(`
-      INSERT INTO scans (id, url, target_host, patch_status, php_version, reason, exit_code, headers_summary)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(
-      generateId(),
-      res.url,
-      res.target_host,
-      res.patch_status,
-      res.php_version,
-      res.reason,
-      res.exit_code,
-      res.headers_summary || ''
-    ).run()
+      // Record in scans table
+      await env.DB.prepare(`
+        INSERT INTO scans (id, url, target_host, patch_status, php_version, reason, exit_code, headers_summary)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        generateId(),
+        res.url,
+        res.target_host,
+        res.patch_status,
+        res.php_version,
+        res.reason,
+        res.exit_code,
+        res.headers_summary || ''
+      ).run()
 
-    // If vulnerable, send alert webhook
-    if (res.patch_status === 'potentially_vulnerable' && webhookEnabled && webhookUrl) {
-      try {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            content: `⚠️ **PHP2Shell 威脅警報**：站台 \`${item.label}\` (${item.url}) 偵測到受威脅的 PHP 版本 (\`${res.php_version}\`)！\\n> 原因: ${res.reason}`,
-          }),
-        })
-      } catch (alertErr) {
-        console.error('Webhook alert delivery error:', alertErr)
+      // If vulnerable, send alert webhook
+      if (res.patch_status === 'potentially_vulnerable' && webhookEnabled && webhookUrl) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              content: `⚠️ **PHP2Shell 威脅警報**：站台 \`${item.label}\` (${item.url}) 偵測到受威脅的 PHP 版本 (\`${res.php_version}\`)！\\n> 原因: ${res.reason}`,
+            }),
+          })
+        } catch (alertErr) {
+          console.error('Webhook alert delivery error:', alertErr)
+        }
       }
-    }
-  }
+    })
+  )
 }
 
 export default {

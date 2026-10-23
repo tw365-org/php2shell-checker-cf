@@ -69,11 +69,7 @@ export async function verifyJwt(token: string, secret: string): Promise<Record<s
     )
 
     // Decode signature
-    const sigStr = base64UrlDecode(signatureB64)
-    const sigBytes = new Uint8Array(sigStr.length)
-    for (let i = 0; i < sigStr.length; i++) {
-      sigBytes[i] = sigStr.charCodeAt(i)
-    }
+    const sigBytes = Uint8Array.from(base64UrlDecode(signatureB64), (c) => c.charCodeAt(0))
 
     const isValid = await crypto.subtle.verify('HMAC', key, sigBytes, enc.encode(data))
     if (!isValid) return null
