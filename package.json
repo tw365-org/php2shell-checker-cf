@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "test": "node phpcheck.test.js && node test/checker.test.js",
+    "test": "node phpcheck.test.js && node test/checker.test.js && node test/e2e.test.js",
+    "test:unit": "node phpcheck.test.js && node test/checker.test.js",
+    "test:e2e": "node test/e2e.test.js",
     "d1:init:local": "wrangler d1 execute DB --local --file=./migrations/0001_init.sql",
     "d1:init:remote": "wrangler d1 execute DB --remote --file=./migrations/0001_init.sql"
   },
