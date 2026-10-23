@@ -42,21 +42,21 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         extend: {
           colors: {
             obsidian: {
-              950: '#08090c',
-              900: '#0d0e12',
-              850: '#12141a',
-              800: '#1a1d24',
-              750: '#21252e',
-              700: '#272b36',
+              950: 'var(--bg-950)',
+              900: 'var(--bg-900)',
+              850: 'var(--bg-850)',
+              800: 'var(--bg-800)',
+              750: 'var(--bg-750)',
+              700: 'var(--bg-700)',
             },
             ansi: {
-              green: '#10b981',
-              amber: '#f59e0b',
-              red: '#f43f5e',
-              cyan: '#06b6d4',
-              blue: '#3b82f6',
-              purple: '#a855f7',
-              gray: '#64748b',
+              green: 'var(--ansi-green)',
+              amber: 'var(--ansi-amber)',
+              red: 'var(--ansi-red)',
+              cyan: 'var(--ansi-cyan)',
+              blue: 'var(--ansi-blue)',
+              purple: 'var(--ansi-purple)',
+              gray: 'var(--ansi-gray)',
             }
           },
           fontFamily: {
@@ -68,6 +68,193 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
+    
+    /* ---------------------------------------------------- */
+    /* Theme Tokens Engine (Multi-Retro Developer Palettes)  */
+    /* ---------------------------------------------------- */
+    :root, [data-theme="obsidian"] {
+      --bg-950: #08090c;
+      --bg-900: #0d0e12;
+      --bg-850: #12141a;
+      --bg-800: #1a1d24;
+      --bg-750: #21252e;
+      --bg-700: #272b36;
+      --ansi-green: #10b981;
+      --ansi-amber: #f59e0b;
+      --ansi-red: #f43f5e;
+      --ansi-cyan: #06b6d4;
+      --ansi-blue: #3b82f6;
+      --ansi-purple: #a855f7;
+      --ansi-gray: #64748b;
+      --primary-accent: #10b981;
+    }
+
+    [data-theme="vt100"] {
+      --bg-950: #040804;
+      --bg-900: #081208;
+      --bg-850: #0c1a0c;
+      --bg-800: #112611;
+      --bg-750: #173317;
+      --bg-700: #1f421f;
+      --ansi-green: #33ff33;
+      --ansi-amber: #ffff33;
+      --ansi-red: #ff3333;
+      --ansi-cyan: #33ffff;
+      --ansi-blue: #3399ff;
+      --ansi-purple: #cc33ff;
+      --ansi-gray: #448844;
+      --primary-accent: #33ff33;
+    }
+
+    [data-theme="amber"] {
+      --bg-950: #0b0700;
+      --bg-900: #130d00;
+      --bg-850: #1d1300;
+      --bg-800: #2a1c00;
+      --bg-750: #382600;
+      --bg-700: #493300;
+      --ansi-green: #ffb000;
+      --ansi-amber: #ff8c00;
+      --ansi-red: #ff3b00;
+      --ansi-cyan: #ffd700;
+      --ansi-blue: #e6a100;
+      --ansi-purple: #ff7700;
+      --ansi-gray: #8c6200;
+      --primary-accent: #ffb000;
+    }
+
+    [data-theme="dracula"] {
+      --bg-950: #191a21;
+      --bg-900: #282a36;
+      --bg-850: #343746;
+      --bg-800: #44475a;
+      --bg-750: #4e5267;
+      --bg-700: #6272a4;
+      --ansi-green: #50fa7b;
+      --ansi-amber: #f1fa8c;
+      --ansi-red: #ff5555;
+      --ansi-cyan: #8be9fd;
+      --ansi-blue: #8be9fd;
+      --ansi-purple: #bd93f9;
+      --ansi-gray: #6272a4;
+      --primary-accent: #bd93f9;
+    }
+
+    [data-theme="solarized"] {
+      --bg-950: #001e26;
+      --bg-900: #002b36;
+      --bg-850: #073642;
+      --bg-800: #0b4554;
+      --bg-750: #105263;
+      --bg-700: #586e75;
+      --ansi-green: #859900;
+      --ansi-amber: #b58900;
+      --ansi-red: #dc322f;
+      --ansi-cyan: #2aa198;
+      --ansi-blue: #268bd2;
+      --ansi-purple: #6c71c4;
+      --ansi-gray: #657b83;
+      --primary-accent: #2aa198;
+    }
+
+    [data-theme="win95"] {
+      --bg-950: #008080;
+      --bg-900: #c0c0c0;
+      --bg-850: #d4d0c8;
+      --bg-800: #dfdfdf;
+      --bg-750: #e7e7e7;
+      --bg-700: #808080;
+      --ansi-green: #008000;
+      --ansi-amber: #808000;
+      --ansi-red: #c00000;
+      --ansi-cyan: #000080;
+      --ansi-blue: #0000ff;
+      --ansi-purple: #800080;
+      --ansi-gray: #808080;
+      --primary-accent: #000080;
+    }
+
+    /* CRT Phosphor Scanline Overlay */
+    [data-theme="vt100"] body::after,
+    [data-theme="amber"] body::after {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.03));
+      z-index: 9999;
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+      opacity: 0.65;
+    }
+    [data-theme="vt100"] * {
+      text-shadow: 0 0 1.5px rgba(51, 255, 51, 0.45);
+    }
+    [data-theme="amber"] * {
+      text-shadow: 0 0 1.5px rgba(255, 176, 0, 0.45);
+    }
+
+    /* Windows 95 Bevel & Theme Overrides */
+    [data-theme="win95"] body {
+      background-color: #008080 !important;
+      color: #000000 !important;
+    }
+    [data-theme="win95"] header {
+      background-color: #000080 !important;
+      border-bottom: 2px solid #000000 !important;
+    }
+    [data-theme="win95"] header * {
+      color: #ffffff !important;
+    }
+    [data-theme="win95"] header select, [data-theme="win95"] header button {
+      color: #000000 !important;
+      background-color: #c0c0c0 !important;
+      border: 2px outset #ffffff !important;
+    }
+    [data-theme="win95"] .bg-obsidian-900,
+    [data-theme="win95"] .bg-obsidian-850,
+    [data-theme="win95"] .bg-obsidian-800 {
+      background-color: #c0c0c0 !important;
+      border: 2px outset #ffffff !important;
+      color: #000000 !important;
+    }
+    [data-theme="win95"] .bg-obsidian-950 {
+      background-color: #ffffff !important;
+      border: 2px inset #808080 !important;
+      color: #000000 !important;
+    }
+    [data-theme="win95"] input, [data-theme="win95"] textarea {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 2px inset #808080 !important;
+    }
+    [data-theme="win95"] button {
+      border: 2px outset #ffffff !important;
+      background-color: #c0c0c0 !important;
+      color: #000000 !important;
+    }
+    [data-theme="win95"] button:active {
+      border: 2px inset #ffffff !important;
+    }
+    [data-theme="win95"] .text-white,
+    [data-theme="win95"] .text-zinc-100,
+    [data-theme="win95"] .text-zinc-200,
+    [data-theme="win95"] .text-zinc-300,
+    [data-theme="win95"] .text-zinc-400 {
+      color: #000000 !important;
+    }
+    [data-theme="win95"] .text-zinc-500,
+    [data-theme="win95"] .text-zinc-600 {
+      color: #444444 !important;
+    }
+    [data-theme="win95"] footer {
+      background-color: #c0c0c0 !important;
+      border-top: 2px groove #ffffff !important;
+    }
+    [data-theme="win95"] footer * {
+      color: #333333 !important;
+    }
+
     html {
       transition: font-size 0.15s ease-in-out;
     }
@@ -75,8 +262,8 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       font-family: 'JetBrains Mono', -apple-system, BlinkMacSystemFont, "Microsoft JhengHei", "PingFang TC", monospace;
     }
     ::selection {
-      background-color: #10b981;
-      color: #08090c;
+      background-color: var(--ansi-green);
+      color: var(--bg-950);
     }
     .tui-glow {
       box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.15);
@@ -90,12 +277,21 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
     }
   </style>
   <script>
-    // Immediate script execution to restore font size before initial paint
+    // Immediate script execution to restore font size and theme before initial paint (Anti-FOUC)
     (function() {
+      // 1. Font Scale
       const savedFont = localStorage.getItem('cf_font_scale');
       if (savedFont) {
         document.documentElement.style.fontSize = savedFont + '%';
       }
+      // 2. Retro Theme
+      const urlParams = new URLSearchParams(window.location.search);
+      const themeParam = urlParams.get('theme');
+      const validThemes = ['obsidian', 'vt100', 'amber', 'dracula', 'solarized', 'win95'];
+      const theme = (themeParam && validThemes.includes(themeParam))
+        ? themeParam
+        : (localStorage.getItem('cf_theme') || 'obsidian');
+      document.documentElement.setAttribute('data-theme', theme);
     })();
   </script>
 </head>
@@ -137,6 +333,22 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         </nav>
 
         <div class="h-4 w-px bg-obsidian-800 hidden sm:block"></div>
+
+        <!-- Retro Theme Selector & Shortcut Indicator -->
+        <div class="flex items-center bg-obsidian-950 border border-obsidian-750 rounded text-xs">
+          <span class="pl-2 pr-1 text-zinc-400">🎨</span>
+          <select id="theme-selector" onchange="setTheme(this.value)" class="bg-transparent text-zinc-200 text-xs py-1 pr-1 outline-none cursor-pointer font-semibold border-0">
+            <option value="obsidian" class="bg-obsidian-900 text-zinc-200" data-i18n="themeObsidian">黑曜石 agy</option>
+            <option value="vt100" class="bg-obsidian-900 text-zinc-200" data-i18n="themeVt100">VT100 綠螢幕</option>
+            <option value="amber" class="bg-obsidian-900 text-zinc-200" data-i18n="themeAmber">復古琥珀 CRT</option>
+            <option value="dracula" class="bg-obsidian-900 text-zinc-200" data-i18n="themeDracula">Dracula 吸血鬼</option>
+            <option value="solarized" class="bg-obsidian-900 text-zinc-200" data-i18n="themeSolarized">Solarized 太陽黑</option>
+            <option value="win95" class="bg-obsidian-900 text-zinc-200" data-i18n="themeWin95">Win 95 經典</option>
+          </select>
+          <button onclick="cycleTheme()" title="切換下一個主題 (按鍵盤 T)" class="px-2 py-1 text-zinc-400 hover:text-ansi-green hover:bg-obsidian-850 rounded-r border-l border-obsidian-750 font-mono text-[11px] font-bold">
+            [T]
+          </button>
+        </div>
 
         <!-- Language Selector Button (zh-TW default & en toggle) -->
         <button onclick="toggleLanguage()" id="lang-toggle-btn" class="px-2.5 py-1 bg-obsidian-950 hover:bg-obsidian-850 text-zinc-300 border border-obsidian-750 rounded text-xs transition flex items-center gap-1 font-semibold">
@@ -650,6 +862,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         statusOk: '[安全: 0] 達到官方安全版本',
         statusVulnTag: '[受威脅: 1] 潛在暴露弱點',
         statusUnknownTag: '[未知: 3] 未知或無標頭',
+        themeObsidian: '黑曜石 agy',
+        themeVt100: 'VT100 綠螢幕',
+        themeAmber: '復古琥珀 CRT',
+        themeDracula: 'Dracula 吸血鬼',
+        themeSolarized: 'Solarized 太陽黑',
+        themeWin95: 'Win 95 經典',
         targetLabel: '檢測目標網址',
         detectedPhpLabel: '偵測到的 PHP 版本',
         exitCodeLabel: '退出狀態碼',
@@ -723,6 +941,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         statusOk: '[OK: 0] UPSTREAM_FIXED',
         statusVulnTag: '[VULN: 1] POTENTIALLY_EXPOSED',
         statusUnknownTag: '[UNKNOWN: 3] NOT_ADVERTISED',
+        themeObsidian: 'Obsidian agy',
+        themeVt100: 'VT100 Phosphor',
+        themeAmber: 'Amber CRT',
+        themeDracula: 'Dracula Purple',
+        themeSolarized: 'Solarized Dark',
+        themeWin95: 'Classic Win95',
         targetLabel: 'DIAGNOSTIC TARGET',
         detectedPhpLabel: 'DETECTED PHP',
         exitCodeLabel: 'EXIT CODE',
@@ -796,6 +1020,45 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       currentScaleIndex = 0;
       applyFontSize(100);
       localStorage.setItem('cf_font_scale', '100');
+    }
+
+    // ----------------------------------------------------
+    // Retro Themes Engine
+    // ----------------------------------------------------
+    const THEMES = ['obsidian', 'vt100', 'amber', 'dracula', 'solarized', 'win95'];
+    const THEME_FAVICONS = {
+      obsidian: '#10b981',
+      vt100: '#33ff33',
+      amber: '#ffb000',
+      dracula: '#bd93f9',
+      solarized: '#2aa198',
+      win95: '#000080'
+    };
+
+    function setTheme(theme) {
+      if (!THEMES.includes(theme)) theme = 'obsidian';
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('cf_theme', theme);
+      const sel = document.getElementById('theme-selector');
+      if (sel) sel.value = theme;
+      updateThemeFavicon(theme);
+    }
+
+    function cycleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme') || 'obsidian';
+      const idx = THEMES.indexOf(cur);
+      const nextIdx = (idx + 1) % THEMES.length;
+      setTheme(THEMES[nextIdx]);
+    }
+
+    function updateThemeFavicon(theme) {
+      const color = THEME_FAVICONS[theme] || '#10b981';
+      const encoded = encodeURIComponent(color);
+      const svg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0b0e'/%3E%3Ctext x='4' y='22' font-family='monospace' font-weight='900' font-size='18' fill='" + encoded + "'%3E%E2%9D%AF_%3C/text%3E%3C/svg%3E";
+      let link = document.querySelector("link[rel*='icon']");
+      if (link) {
+        link.href = svg;
+      }
     }
 
     function applyFontSize(scale) {
@@ -1300,6 +1563,12 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       initFontSize();
       setLanguage(currentLang);
 
+      // Initialize Theme Selector & Favicon from data-theme
+      const activeTheme = document.documentElement.getAttribute('data-theme') || 'obsidian';
+      const sel = document.getElementById('theme-selector');
+      if (sel) sel.value = activeTheme;
+      updateThemeFavicon(activeTheme);
+
       const params = new URLSearchParams(window.location.search);
       const reportId = params.get('report');
       if (reportId) {
@@ -1386,6 +1655,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
     // '+' or '=' magnifies font
     // '-' shrinks font
     // '0' resets font to 100%
+    // 't' or 'T' cycles retro theme
     window.addEventListener('keydown', (e) => {
       if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
         return;
@@ -1403,6 +1673,9 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       } else if (e.key === '0') {
         e.preventDefault();
         resetFontSize();
+      } else if (e.key === 't' || e.key === 'T') {
+        e.preventDefault();
+        cycleTheme();
       }
     });
   </script>
