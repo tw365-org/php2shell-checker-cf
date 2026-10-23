@@ -147,3 +147,42 @@ test('Client scripts in src/ui.ts parse with zero syntax errors', () => {
   }
   assert.ok(count >= 2, 'Should find and validate at least 2 inline scripts')
 })
+
+
+// ----------------------------------------------------
+// Strict URL Normalization & Validation Tests
+// ----------------------------------------------------
+function validateStrictAddress(raw) {
+  const address = (raw || '').trim()
+  if (!address || /\s/.test(address)) {
+    return { ok: false, exit_code: 2, error: 'Whitespace prohibited' }
+  }
+  let url
+  try {
+    const target = (address.startsWith('http://') || address.startsWith('https://')) ? address : `https://${address}`
+    url = new URL(target)
+  } catch {
+    return { ok: false, exit_code: 2, error: 'Invalid URL format' }
+  }
+  if (!url.hostname || url.hostname.includes(' ') || (!url.hostname.includes('.') && url.hostname !== 'localhost' && !/^(\d{1,3}\.){3}\d{1,3}$/.test(url.hostname))) {
+    return { ok: false, exit_code: 2, error: 'Invalid hostname' }
+  }
+  return { ok: true, url: url.toString(), host: url.hostname }
+}
+
+test('Strict URL Validator rejects addresses with spaces (php.n e t 44555)', () => {
+  assert.equal(validateStrictAddress('php.n e t 44555').ok, false)
+  assert.equal(validateStrictAddress('php.n e t 44555').exit_code, 2)
+  assert.equal(validateStrictAddress('php.net 8080').ok, false)
+  assert.equal(validateStrictAddress('php.net 44555').ok, false)
+  assert.equal(validateStrictAddress('   ').ok, false)
+  assert.equal(validateStrictAddress('').ok, false)
+})
+
+test('Strict URL Validator accepts valid domain names, ports and URLs', () => {
+  assert.equal(validateStrictAddress('php.net').ok, true)
+  assert.equal(validateStrictAddress('https://php.net').ok, true)
+  assert.equal(validateStrictAddress('example.com:8443').ok, true)
+  assert.equal(validateStrictAddress('1.1.1.1').ok, true)
+  assert.equal(validateStrictAddress('localhost').ok, true)
+})

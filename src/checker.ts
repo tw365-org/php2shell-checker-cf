@@ -95,7 +95,21 @@ export function versionStatus(version: string | null): PatchStatus {
 }
 
 export async function checkUrl(rawAddress: string, timeoutSec = 10, lang: 'zh' | 'en' = 'zh'): Promise<CheckResult> {
-  const address = rawAddress.trim()
+  const address = (rawAddress || '').trim()
+
+  if (!address || /\s/.test(address)) {
+    return {
+      url: address || rawAddress || '',
+      target_host: 'invalid',
+      patch_status: 'unknown',
+      php_version: null,
+      reason: lang === 'en'
+        ? 'Invalid URL format: Whitespace characters or extraneous parameters are strictly prohibited'
+        : '網址格式不正確：網址與主機名稱禁止包含空格或多餘參數，請輸入合法網址',
+      exit_code: 2,
+    }
+  }
+
   let url: URL
   try {
     if (!address.startsWith('http://') && !address.startsWith('https://')) {

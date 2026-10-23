@@ -410,13 +410,18 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
           </div>
 
           <div class="flex flex-col sm:flex-row items-stretch gap-2">
-            <input type="text" id="target-url" placeholder="https://example.com 或直接輸入網址" required
+            <input type="text" id="target-url" placeholder="https://example.com 或直接輸入網址" required oninput="validateTargetUrlInput()"
               class="flex-1 bg-obsidian-950 border border-obsidian-700 rounded p-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-ansi-green focus:ring-1 focus:ring-ansi-green font-mono">
             <button type="submit" id="btn-submit-scan"
               class="px-5 py-3 bg-obsidian-800 hover:bg-obsidian-700 text-ansi-green border border-obsidian-700 rounded text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 whitespace-nowrap">
               <span id="scan-spinner" class="hidden">...</span>
               <span data-i18n="btnRunCheck">[開始檢測]</span>
             </button>
+          </div>
+          <!-- Inline Validation Error Message -->
+          <div id="target-url-error" class="hidden text-xs text-ansi-red font-mono flex items-center gap-1.5 pt-1">
+            <span>🛑</span>
+            <span id="target-url-error-msg"></span>
           </div>
 
           <!-- Quick Args Chips -->
@@ -862,6 +867,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         statusOk: '[安全: 0] 達到官方安全版本',
         statusVulnTag: '[受威脅: 1] 潛在暴露弱點',
         statusUnknownTag: '[未知: 3] 未知或無標頭',
+        statusInvalidTag: '⚠️ [格式錯誤: 2] 無效網址',
         themeObsidian: '⬛ 黑曜石 agy',
         themeVt100: '🟢 VT100 綠螢幕',
         themeAmber: '🟡 復古琥珀 CRT',
@@ -941,6 +947,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         statusOk: '[OK: 0] UPSTREAM_FIXED',
         statusVulnTag: '[VULN: 1] POTENTIALLY_EXPOSED',
         statusUnknownTag: '[UNKNOWN: 3] NOT_ADVERTISED',
+        statusInvalidTag: '⚠️ [INVALID: 2] MALFORMED_URL',
         themeObsidian: '⬛ Obsidian agy',
         themeVt100: '🟢 VT100 Phosphor',
         themeAmber: '🟡 Amber CRT',
@@ -1098,6 +1105,60 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
 
     function fillUrl(val) {
       document.getElementById('target-url').value = val;
+      validateTargetUrlInput();
+    }
+
+    function validateTargetUrlInput() {
+      const input = document.getElementById('target-url');
+      const errBox = document.getElementById('target-url-error');
+      const errMsg = document.getElementById('target-url-error-msg');
+      const submitBtn = document.getElementById('btn-submit-scan');
+      if (!input || !errBox || !errMsg || !submitBtn) return true;
+
+      const raw = input.value;
+      if (!raw) {
+        input.classList.remove('border-ansi-red', 'focus:border-ansi-red', 'text-rose-300');
+        input.classList.add('border-obsidian-700');
+        errBox.classList.add('hidden');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        return true;
+      }
+
+      let error = null;
+      if (/\s/.test(raw.trim())) {
+        error = currentLang === 'zh'
+          ? '網址格式不正確：禁止包含空格或多餘參數（如附帶埠號/參數）'
+          : 'Invalid URL format: Whitespace or extraneous parameters are strictly prohibited';
+      } else {
+        const val = raw.trim();
+        const testTarget = (val.startsWith('http://') || val.startsWith('https://')) ? val : 'https://' + val;
+        try {
+          const parsed = new URL(testTarget);
+          if (!parsed.hostname || parsed.hostname.includes(' ') || (!parsed.hostname.includes('.') && parsed.hostname !== 'localhost' && !/^(\d{1,3}\.){3}\d{1,3}$/.test(parsed.hostname))) {
+            error = currentLang === 'zh' ? '請輸入有效的網域名稱或 IP 網址' : 'Please provide a valid domain name or IP address';
+          }
+        } catch {
+          error = currentLang === 'zh' ? '網址格式不正確，請輸入合法網址' : 'Invalid URL format';
+        }
+      }
+
+      if (error) {
+        input.classList.remove('border-obsidian-700');
+        input.classList.add('border-ansi-red', 'focus:border-ansi-red', 'text-rose-300');
+        errMsg.innerText = error;
+        errBox.classList.remove('hidden');
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        return false;
+      } else {
+        input.classList.remove('border-ansi-red', 'focus:border-ansi-red', 'text-rose-300');
+        input.classList.add('border-obsidian-700');
+        errBox.classList.add('hidden');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        return true;
+      }
     }
 
     // Single URL Scan
@@ -1108,6 +1169,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       const spinner = document.getElementById('scan-spinner');
       const resultArea = document.getElementById('scan-result');
 
+      if (!validateTargetUrlInput()) return;
       const url = input.value.trim();
       if (!url) return;
 
@@ -1140,7 +1202,11 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       let statusTag = dict.statusUnknownTag;
       let icon = '❓';
 
-      if (data.patch_status === 'ok') {
+      if (data.exit_code === 2) {
+        statusColor = 'text-amber-400 border-amber-600/70 bg-amber-950/40';
+        statusTag = dict.statusInvalidTag || '⚠️ [格式錯誤: 2] 無效網址';
+        icon = '⚠️';
+      } else if (data.patch_status === 'ok') {
         statusColor = 'text-ansi-green border-emerald-900/60 bg-emerald-950/20';
         statusTag = dict.statusOk;
         icon = '✔';
@@ -1272,9 +1338,10 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       const chips = document.getElementById('batch-summary-chips');
       container.classList.remove('hidden');
 
-      let vuln = 0, ok = 0, unk = 0;
+      let vuln = 0, ok = 0, unk = 0, invalid = 0;
       results.forEach(r => {
-        if (r.patch_status === 'potentially_vulnerable') vuln++;
+        if (r.exit_code === 2) invalid++;
+        else if (r.patch_status === 'potentially_vulnerable') vuln++;
         else if (r.patch_status === 'ok') ok++;
         else unk++;
       });
@@ -1283,12 +1350,14 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         <span class="text-ansi-red font-bold">[\${currentLang === 'zh' ? '受威脅' : 'VULN'}: \${vuln}]</span>
         <span class="text-ansi-green font-bold">[\${currentLang === 'zh' ? '安全' : 'SAFE'}: \${ok}]</span>
         <span class="text-ansi-amber font-bold">[\${currentLang === 'zh' ? '未知' : 'UNK'}: \${unk}]</span>
+        \${invalid > 0 ? \`<span class="text-amber-400 font-bold">[\${currentLang === 'zh' ? '格式錯誤' : 'INVALID'}: \${invalid}]</span>\` : ''}
       \`;
 
       tbody.innerHTML = results.map(r => {
         let badge = '<span class="text-ansi-amber font-bold">[UNKNOWN]</span>';
-        if (r.patch_status === 'ok') badge = '<span class="text-ansi-green font-bold">[OK]</span>';
-        if (r.patch_status === 'potentially_vulnerable') badge = '<span class="text-ansi-red font-bold">[VULN]</span>';
+        if (r.exit_code === 2) badge = '<span class="text-amber-400 font-bold">[INVALID]</span>';
+        else if (r.patch_status === 'ok') badge = '<span class="text-ansi-green font-bold">[OK]</span>';
+        else if (r.patch_status === 'potentially_vulnerable') badge = '<span class="text-ansi-red font-bold">[VULN]</span>';
 
         return \`
           <tr class="hover:bg-obsidian-850">
