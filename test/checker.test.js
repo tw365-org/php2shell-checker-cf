@@ -122,3 +122,28 @@ test('Theme Engine maps correct vector Favicon hex colors', () => {
   assert.equal(getThemeFaviconColor('dracula'), '#bd93f9')
   assert.equal(getThemeFaviconColor('invalid'), '#10b981')
 })
+
+
+test('Client scripts in src/ui.ts parse with zero syntax errors', () => {
+  const fs = require('node:fs')
+  const path = require('node:path')
+  const uiPath = path.join(__dirname, '..', 'src', 'ui.ts')
+  const uiContent = fs.readFileSync(uiPath, 'utf8')
+  
+  const scriptRegex = /<script(?![^>]*src=)>([\s\S]*?)<\/script>/g
+  let match
+  let count = 0
+  while ((match = scriptRegex.exec(uiContent)) !== null) {
+    let scriptCode = match[1]
+    scriptCode = scriptCode.split('\\`').join('`')
+    scriptCode = scriptCode.split('\\${').join('__ESCAPED_DOLLAR__')
+    scriptCode = scriptCode.replace(/\${[^}]+}/g, '""')
+    scriptCode = scriptCode.split('__ESCAPED_DOLLAR__').join('${')
+    
+    assert.doesNotThrow(() => {
+      new Function(scriptCode)
+    }, `Inline script #${count + 1} has syntax error`)
+    count++
+  }
+  assert.ok(count >= 2, 'Should find and validate at least 2 inline scripts')
+})

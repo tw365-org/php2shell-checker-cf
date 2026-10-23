@@ -959,8 +959,8 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
         remediationTitle: 'ACTIONABLE REMEDIATION (Wiz AI-SDLC)',
         acceptableUsePolicy: '[Acceptable Use & Anti-Abuse Policy] This tool is strictly designed for authorized defensive security audits on systems you own or have explicit written permission to test. Unauthorized scanning, malicious reconnaissance, or disruptive exploitation are strictly prohibited. The runner assumes full legal responsibility.',
         tributeStatement: '[Independent Project & Trademark Disclaimer] This is an independent open-source community project. Its interface pays tribute to the terminal minimalism and developer UX of Google Antigravity CLI (agy). This project is not an official product and is not affiliated with, sponsored by, or endorsed by Google LLC. Google and Antigravity are trademarks of Google LLC. All code maintenance, Cloudflare edge deployment, and operational responsibilities are solely undertaken and answered for by the author & maintainers (tw365-org).',
-        wizAttribution: '[Security Architecture Attribution] The layered defense, remediation-first design, and zero-data-exposure architecture of this project reference and adhere to Wiz\'s framework "Security for AI-Driven Development" (Source: Wiz Academy - https://www.wiz.io/academy/application-security/ai-code-security). We gratefully acknowledge and credit Wiz.',
-        antiClaudeStatement: '[Aesthetic Manifesto: Zero Warm-Beige Fluff] This interface strictly repudiates warm beige backgrounds, sunset terracotta tones, and cozy chatbot tropes (aka the "Claude café aesthetic"). This is an uncompromising developer terminal: obsidian black, ANSI exit codes, and zero conversational fluff. We diagnose vulnerabilities, we don\'t serve lattes. (Note: "Claude" is a trademark of Anthropic, PBC; referenced here solely as satirical stylistic commentary with zero affiliation).',
+        wizAttribution: '[Security Architecture Attribution] The layered defense, remediation-first design, and zero-data-exposure architecture of this project reference and adhere to the Wiz framework "Security for AI-Driven Development" (Source: Wiz Academy - https://www.wiz.io/academy/application-security/ai-code-security). We gratefully acknowledge and credit Wiz.',
+        antiClaudeStatement: '[Aesthetic Manifesto: Zero Warm-Beige Fluff] This interface strictly repudiates warm beige backgrounds, sunset terracotta tones, and cozy chatbot tropes (aka the "Claude café aesthetic"). This is an uncompromising developer terminal: obsidian black, ANSI exit codes, and zero conversational fluff. We diagnose vulnerabilities; we do not serve lattes. (Note: "Claude" is a trademark of Anthropic, PBC; referenced here solely as satirical stylistic commentary with zero affiliation).',
       }
     };
 
@@ -1564,7 +1564,8 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
       setLanguage(currentLang);
 
       // Initialize Theme Selector & Favicon from data-theme
-      const activeTheme = document.documentElement.getAttribute('data-theme') || 'obsidian';
+      const activeTheme = localStorage.getItem('cf_theme') || document.documentElement.getAttribute('data-theme') || 'obsidian';
+      setTheme(activeTheme);
       const sel = document.getElementById('theme-selector');
       if (sel) sel.value = activeTheme;
       updateThemeFavicon(activeTheme);
@@ -1587,7 +1588,7 @@ export function renderAppHtml(appName = 'PHP2Shell Edge Checker', initialTab: 'f
 
       if (params.get('demo') === 'batch') {
         switchTab('batch');
-        const demoUrls = "https://legacy-crm.internal.corp\nhttps://portal.marketing.org\nhttps://api.gateway.net\nhttps://dev-stage.service.io";
+        const demoUrls = "https://legacy-crm.internal.corp\\nhttps://portal.marketing.org\\nhttps://api.gateway.net\\nhttps://dev-stage.service.io";
         const textarea = document.getElementById('batch-urls');
         if (textarea) textarea.value = demoUrls;
         renderBatchResults([
