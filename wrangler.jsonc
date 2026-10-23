@@ -15,7 +15,7 @@
     {
       "binding": "DB",
       "database_name": "php2shell-db",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "9cc4dd49-fcf4-4f04-97ae-c200f7b3a481",
       "migrations_table": "d1_migrations",
       "migrations_dir": "migrations"
     }
