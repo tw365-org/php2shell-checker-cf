@@ -156,8 +156,8 @@ node phpcheck.js "https://example.com" --json
 
 本專案之 AI-SDLC（AI 驅動開發生命週期）分層安全防禦、即用型修復命令引導（Remediation-First）以及邊緣零數據出境架構，深入參考並遵循雲端資安領導廠商 **Wiz** 發表之權威指南：
 
-- **引用指南**：[*Security for AI-Driven Development* (AI 驅動開發架構安全指南)](https://www.wiz.io)
-- **指南出處**：Wiz Research, Wiz Inc.
+- **引用指南**：[*Security for AI-Driven Development* (AI 驅動開發架構安全指南)](https://www.wiz.io/academy/application-security/ai-code-security)
+- **官方出處**：[Wiz Academy: AI Code Security](https://www.wiz.io/academy/application-security/ai-code-security) (Wiz Research, Wiz Inc.)
 - **落實面向**：
   - **Stage 2 第一道閘門**：GitHub Actions 自動執行供應鏈 `npm audit` 與靜態安全測試。
   - **Criterion 3 即用型修復**：判定弱點時直接輸出發行版一鍵升級命令，落實「Fix Quality, not Finding Count」。
